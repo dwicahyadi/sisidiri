@@ -1,0 +1,1 @@
+export const disclaimer = 'Hasil ini tidak dijamin akurat dan belum divalidasi oleh ahli. Kuis ini hanya membantu refleksi berdasarkan teori MBTI; penilaian profesional memerlukan pemeriksaan oleh ahli di bidangnya.';

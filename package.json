@@ -1,0 +1,31 @@
+{
+  "name": "personality-insight-ai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Kuis refleksi berdasarkan teori MBTI dengan konsultasi Gemini.",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "setup": "node scripts/setup-env.mjs",
+    "dev": "node scripts/dev.mjs",
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "build": "node scripts/build.mjs",
+    "db:seed": "node --env-file-if-exists=.env database/seed.js",
+    "test": "node --test tests/*.test.js",
+    "check": "node scripts/check.mjs"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "zod": "4.3.5"
+  },
+  "optionalDependencies": {
+    "@google/genai": "2.28.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.18",
+    "postcss": "8.5.6",
+    "tailwindcss": "4.1.18"
+  }
+}

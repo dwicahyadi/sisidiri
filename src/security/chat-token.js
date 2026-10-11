@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import { createHmac, timingSafeEqual, randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { HttpError } from '../middleware/errors.js';
 import { isValidResult } from '../features/quiz/scoring.js';
@@ -8,7 +8,7 @@ const dimension = z.object({
   leftScore: z.number().int(), rightScore: z.number().int(),
 }).strict();
 const payloadSchema = z.object({
-  v: z.literal(1), purpose: z.literal('personality-chat'),
+  v: z.literal(2), sid: z.string().uuid(), turn: z.number().int().min(0).max(25), purpose: z.literal('personality-chat'),
   iat: z.number().int().nonnegative(), exp: z.number().int().positive(),
   type: z.string(), dimensions: z.array(dimension).length(4),
   previousInteractionId: z.string().min(1).max(1024).nullable(),
@@ -25,7 +25,7 @@ export function createTokenService(secret, now = () => Math.floor(Date.now() / 1
     issue(result) {
       if (!isValidResult(result)) throw new Error('Hasil scoring tidak valid.');
       const iat = now();
-      return sign({ v: 1, purpose: 'personality-chat', iat, exp: iat + 3600,
+      return sign({ v: 2, sid: randomUUID(), turn: 0, purpose: 'personality-chat', iat, exp: iat + 3600,
         type: result.type, dimensions: result.dimensions, previousInteractionId: null });
     },
     verify(token) {
@@ -42,7 +42,8 @@ export function createTokenService(secret, now = () => Math.floor(Date.now() / 1
     },
     advance(payload, id) {
       if (typeof id !== 'string' || !id.trim() || id.length > 1024) throw new Error('Interaction ID tidak valid.');
-      return sign({ ...payload, previousInteractionId: id });
+      if (payload.turn >= 25) throw new Error('Batas chat tercapai.');
+      return sign({ ...payload, turn: payload.turn + 1, previousInteractionId: id });
     },
   };
 }

@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Kuis kepribadian SisiDiri berdasarkan teori MBTI, dengan chat AI Gemini.",
   "engines": {
-    "node": ">=22.13.0"
+    "node": "22.x"
   },
   "scripts": {
     "setup": "node scripts/setup-env.mjs",
@@ -14,7 +14,9 @@
     "build": "node scripts/build.mjs",
     "db:seed": "node --env-file-if-exists=.env database/seed.js",
     "test": "node --test tests/*.test.js",
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "build:vercel": "node scripts/build-vercel.mjs",
+    "assets:optimize": "python3 scripts/optimize-assets.py"
   },
   "dependencies": {
     "express": "5.1.0",

@@ -8,3 +8,12 @@ public/assets/app.css
 .npm-cache/
 coverage/
 *.log
+
+# Halaman SEO dan crawler files dibuat ulang saat build.
+public/kuis.html
+public/hasil.html
+public/tentang.html
+public/privasi.html
+public/robots.txt
+public/sitemap.xml
+.vercel/

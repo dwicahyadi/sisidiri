@@ -22,10 +22,14 @@ Jalankan `npm run check` untuk syntax dan `npm test` untuk pemeriksaan bermakna 
 
 Pertahankan 20 pertanyaan, ID/pole pada docs/QUESTION_BANK.md, serta empat tabel master. Runtime database read-only. Jawaban, hasil, chat, token, dan interaction ID tidak boleh disimpan aplikasi atau log; state browser hanya di memori.
 
-UI membatasi 25 pesan sukses; token HMAC berlaku absolut 60 menit. Server stateless memvalidasi token/ID/payload serta rate IP; jangan mengklaim kuota keras server atau anti-replay. Gunakan Interactions API, instruction setiap turn, dan konteks dari token/master. Jaga key/secret di environment.
+Server membatasi 25 balasan sukses per sesi dengan counter atomik dan token v2 (ID sesi acak, nomor giliran). Token lama ditolak setelah sukses; request bersamaan ditolak 409. Redis bersama wajib di produksi, tanpa fallback ke memori. Rate IP chat 30/10 menit dan kuis 120/10 menit berlaku lintas instance. CHAT_DAILY_LIMIT default 200 membatasi percobaan provider per hari UTC, termasuk kegagalan. Ini bukan autentikasi atau bukti pengguna manusia.
 
 Disclaimer akurasi cukup sekali di home dan penjelasan lengkap pada halaman tentang; hasil menautkan batasan. Jangan mengulang disclaimer pada kuis/tab/chat. Pertahankan privasi sebelum chat. Hasil hanya refleksi berdasarkan teori MBTI; penilaian profesional memerlukan ahli.
 
 ## Commit dan Pull Request
 
 Gunakan subjek imperatif singkat, misalnya `quiz: validate answers`. PR menjelaskan perubahan, referensi kebutuhan, pemeriksaan nyata, screenshot bila tersedia, serta dampak kontrak/config/privasi. Perbarui dokumentasi yang terdampak bersama kode.
+
+## Deployment dan SEO
+
+Target Vercel Hobby: baca docs/DEPLOYMENT.md. Build membuat master read-only dan HTML SEO per route; app.js mengekspor Express tanpa listener. Jangan seed saat request. Analytics hanya page view produksi, tanpa query/hash atau konten kuis/chat; preview noindex dan tanpa analytics. Source ilustrasi PNG dipertahankan; frontend memakai WebP. Redis bersama wajib untuk limiter dan counter sesi produksi.

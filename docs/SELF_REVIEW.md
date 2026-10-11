@@ -60,3 +60,19 @@ Home, kuis, hasil, dan chat diperbarui sesuai permintaan pengguna. Disclaimer ak
 ## Review SisiDiri — Bahasa dan Keterbacaan
 
 Nama aplikasi di UI, metadata, judul browser, dan chat diubah menjadi SisiDiri; ikon tetap mark.svg. Redaksi home/kuis/hasil/chat/tentang/privasi dan error dipersingkat, serta 16 profil dan 20 pertanyaan disunting tanpa mengubah ID/pole. Bank dokumentasi selaras seed. Font tetap; teks isi 16–18 px, label lebih besar, warna sekunder lebih gelap. Build, syntax, seed, serta enam berkas test lulus. Browser mengonfirmasi redaksi terbaru, alur kuis dan master baru, serta layout desktop/360 px tanpa overflow; capture screenshot timeout. Panduan: docs/COPY_GUIDE.md.
+
+## Review kesiapan Vercel dan SEO - 11 Oktober 2026
+
+Codebase disiapkan untuk Vercel Express/Node 22: default export tanpa port, master SQLite dibuat pada build dan dibuka read-only, validasi environment sebelum build, HTML per route, canonical dari konfigurasi, OG/Twitter dan gambar 1200 x 630, robots/sitemap, noindex kuis/hasil/preview, serta metadata SPA. Analytics page view diizinkan pengguna dan hanya aktif pada produksi dengan flag; query/hash dan custom event ditolak, tanpa data kuis/chat. Privasi diselaraskan. Source PNG dipertahankan; 17 WebP mengurangi total aset ilustrasi dari 14,34 MB menjadi 0,66 MB (95,4%); home sekitar 86 KB.
+
+Pemeriksaan: build lokal dan simulasi environment Vercel produksi lulus; syntax 40 file dan tujuh berkas test lulus. Entrypoint root berhasil diimpor tanpa socket, health berhasil dan byte database tidak berubah. Browser lokal memeriksa metadata SPA, Privasi dengan analytics, seluruh 20 pertanyaan sampai hasil, WebP yang termuat, dan layout hasil 360 px tanpa overflow. OG image diperiksa visual. Tidak ada deploy atau pesan AI live baru pada tahap ini.
+
+Sisa pemeriksaan eksternal: konfigurasi dashboard/domain/secret/key, bundle dan routing pada Vercel sungguhan, penerimaan page view di dashboard, Search Console, performa jaringan produksi, dan kuota provider. Rate limit masih per instance dan 25 pesan hanya UI sesuai keputusan MVP; CHAT_ENABLED=false menyediakan pemutus manual setelah redeploy. Ini kesiapan codebase untuk deploy, bukan bukti seluruh layanan publik sudah berjalan. Lihat [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## Perbaikan keamanan 11 Oktober 2026
+
+Server membatasi 25 balasan sukses per sesi dengan counter atomik dan token v2 (ID sesi acak, nomor giliran). Token lama ditolak setelah sukses; request bersamaan ditolak 409. Redis bersama wajib di produksi, tanpa fallback ke memori. Rate IP chat 30/10 menit dan kuis 120/10 menit berlaku lintas instance. CHAT_DAILY_LIMIT default 200 membatasi percobaan provider per hari UTC, termasuk kegagalan. Ini bukan autentikasi atau bukti pengguna manusia.
+
+Redis hanya menyimpan ID sesi acak, nomor giliran/status request sampai expiry absolut 60 menit, HMAC alamat IP untuk penghitung 10 menit, dan agregat harian sampai pergantian hari UTC + 60 detik. Jawaban, hasil, chat, token, dan interaction ID tidak disimpan di Redis, SQLite, analytics, atau log aplikasi. Memori lokal hanya untuk development.
+
+Pemeriksaan lokal: delapan berkas test lulus; check/build diperiksa kembali. Verifikasi Redis dan Vercel nyata belum dilakukan.

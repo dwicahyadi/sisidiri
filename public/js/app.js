@@ -1,5 +1,7 @@
 import { homeMarkup } from './home.js';
-import { disclaimer } from './copy.js';
+import { aboutMarkup, privacyMarkup } from './pages.js';
+import { updateMetadata } from './seo.js';
+import './analytics.js';
 import { CHAT_LIMIT, MESSAGE_LIMIT, messageLength, canSendChat } from './chat-state.js';
 
 const main = document.querySelector('#main');
@@ -60,8 +62,7 @@ function render() {
   document.querySelectorAll('.header-nav a').forEach((a) => {
     if (a.getAttribute('href') === path) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
-  const titles = { '/': 'Kuis kepribadian', '/kuis': 'Kuis', '/hasil': 'Hasil kuis', '/tentang': 'Tentang kuis', '/privasi': 'Privasi' };
-  document.title = `${titles[path] || titles['/']} — SisiDiri`;
+  updateMetadata(path);
   if (path === '/kuis') return showQuiz();
   if (path === '/hasil') return showResult();
   if (path === '/tentang') return showAbout();
@@ -164,7 +165,7 @@ function showResult() {
     return;
   }
   main.innerHTML = `<div class="shell results-page"><a class="breadcrumb" href="/">← Beranda</a>
-    <section class="result-hero" aria-labelledby="result-title"><figure class="result-art"><img src="/assets/types/${escape(result.type)}.png" width="600" height="600" alt="Ilustrasi tipe ${escape(result.type)}"></figure><div><p class="home-kicker">Hasil kuismu</p><p class="result-code">${escape(result.type)}</p><h1 id="result-title">${escape(result.title)}</h1><p class="result-lead">${escape(result.shortDescription)}</p></div></section>
+    <section class="result-hero" aria-labelledby="result-title"><figure class="result-art"><img src="/assets/types/${escape(result.type)}.webp" width="600" height="600" alt="Ilustrasi tipe ${escape(result.type)}"></figure><div><p class="home-kicker">Hasil kuismu</p><p class="result-code">${escape(result.type)}</p><h1 id="result-title">${escape(result.title)}</h1><p class="result-lead">${escape(result.shortDescription)}</p></div></section>
     <div class="result-content"><section class="result-dimensions" aria-labelledby="dimensions-title"><h2 id="dimensions-title">Kebiasaanmu</h2><div class="scores">${result.dimensions.map((d) => {
       const left = Math.round(d.leftScore / (d.leftScore + d.rightScore) * 100);
       return `<div><div class="dimension-labels"><span>${escape(dimensionLabels[d.code][0])}<strong>${left}%</strong></span><span>${escape(dimensionLabels[d.code][1])}<strong>${100 - left}%</strong></span></div><div class="dimension-line split-${left}" role="img" aria-label="${escape(dimensionLabels[d.code][0])} ${left} persen, ${escape(dimensionLabels[d.code][1])} ${100 - left} persen"><span></span><span></span></div></div>`;
@@ -235,7 +236,7 @@ function renderChat() {
     <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-label="Percakapan AI"></div>
     ${chat.count === 0 ? '<div class="chat-prompts"><button class="prompt-button" type="button">Apa kekuatan aku?</button><button class="prompt-button" type="button">Tips komunikasi, dong</button></div>' : ''}
     <form class="chat-form" id="chat-form"><label class="sr-only" for="chat-message">Pesan untuk AI</label><textarea id="chat-message" rows="2" placeholder="Mau cari tahu apa, Kak?" ${chat.pending || stopped || !state.chatAvailable ? 'disabled' : ''}></textarea><div class="chat-form-bottom"><span class="chat-counter"><span id="char-counter">${messageLength(chat.draft)}</span>/500 karakter</span><button class="button button-primary" id="send-chat" type="submit" disabled>${chat.pending ? 'Menjawab…' : 'Kirim ↑'}</button></div></form>
-    <p class="chat-status" role="status">${chat.pending ? 'Sebentar ya, Kak…' : !state.chatAvailable ? 'Chat AI belum tersedia. Coba lagi nanti, Kak.' : stopped ? chat.expired ? 'Waktu chat berakhir. Ulangi kuis untuk ngobrol lagi.' : 'Sudah 25 pesan, Kak. Ulangi kuis kalau mau mulai chat baru.' : 'Enter untuk kirim · Shift+Enter untuk baris baru'}</p>${chat.error ? `<p class="error-message chat-error" role="alert">${escape(chat.error)}</p>` : ''}`;
+    <p class="chat-status" role="status">${chat.pending ? 'Sebentar ya, Kak…' : !state.chatAvailable ? 'Chat AI belum tersedia. Coba lagi nanti, Kak.' : stopped ? chat.expired ? 'Akses chat berakhir. Ulangi kuis untuk ngobrol lagi.' : 'Sudah 25 pesan, Kak. Ulangi kuis kalau mau mulai chat baru.' : 'Enter untuk kirim · Shift+Enter untuk baris baru'}</p>${chat.error ? `<p class="error-message chat-error" role="alert">${escape(chat.error)}</p>` : ''}`;
   const messages = document.querySelector('#chat-messages');
   appendBubble(messages, 'assistant', `Hai, Kak! Hasil kuismu ${state.result.type}, ${state.result.title}. Mau bahas kebiasaan, kekuatan, atau cara komunikasimu?`);
   if (!chat.messages.length) {
@@ -295,13 +296,9 @@ async function sendChat(event) {
   }
 }
 
-function showAbout() {
-  main.innerHTML = `<div class="shell page-wrap"><div class="narrow"><a class="breadcrumb" href="${state.result ? '/hasil' : '/'}">← ${state.result ? 'Kembali ke hasil' : 'Beranda'}</a><div class="page-heading"><h1>Tentang kuis SisiDiri</h1><p>Apa yang bisa kamu dapatkan dari hasilnya?</p></div><article class="prose-card"><h2>Seberapa akurat hasilnya?</h2><p class="callout">${escape(disclaimer)}</p><h2>Bagaimana hasilnya dihitung?</h2><p>Kamu menjawab 20 pertanyaan tentang kebiasaan sehari-hari. Jawabanmu dikelompokkan ke empat pasangan dalam teori MBTI: E–I, S–N, T–F, dan J–P. Pilihan yang lebih sering muncul membentuk tipe hasilmu.</p><h2>Apa arti persentasenya?</h2><p>Persentase menunjukkan perbandingan pilihanmu pada tiap pasangan. Angka ini bukan ukuran akurasi. Kamu juga bisa merasa berbeda dari hasilnya, tergantung situasi dan pengalamanmu.</p><h2>Kapan perlu bertanya ke ahli?</h2><p>Kalau kamu membutuhkan penilaian psikologis, bicarakan dengan psikolog atau ahli yang sesuai. Kuis ini bukan tes MBTI resmi. Pertanyaannya juga belum diuji untuk memastikan hasilnya konsisten. Jangan jadikan hasilnya satu-satunya dasar untuk keputusan penting.</p><h2>Chat AI bisa membantu apa?</h2><p>Kamu bisa bertanya tentang hasil, kebiasaan, atau cara berkomunikasi. AI bisa keliru dan tidak memberikan diagnosis atau terapi. Kamu mendapat hingga 25 balasan, dengan akses selama 60 menit sejak hasil dihitung.</p><a class="button button-primary" href="${state.result ? '/hasil' : '/kuis'}">${state.result ? 'Kembali ke hasil' : 'Ikuti kuis'} ↗</a></article></div></div>`;
-}
+function showAbout() { main.innerHTML = aboutMarkup(Boolean(state.result)); }
 
-function showPrivacy() {
-  main.innerHTML = `<div class="shell page-wrap"><div class="narrow"><a class="breadcrumb" href="${state.result ? '/hasil' : '/'}">← ${state.result ? 'Kembali ke hasil' : 'Beranda'}</a><div class="page-heading"><h1>Data apa yang dipakai?</h1><p>Ini yang terjadi saat kamu mengisi kuis dan memakai chat.</p></div><article class="prose-card"><h2>Jawaban dan hasil kuis</h2><p>Jawabanmu dikirim ke server untuk menghitung hasil, lalu tidak disimpan. SisiDiri hanya menyimpan pertanyaan dan penjelasan tipe, tanpa akun atau riwayat pengguna.</p><h2>Kalau halaman ditutup atau dimuat ulang</h2><p>Jawaban, hasil, dan chat hanya ada sementara di tab ini. Semuanya hilang dari halaman saat kamu menutup, memuat ulang, atau mengulang kuis. Akses chat berlaku 60 menit sejak hasil dihitung.</p><h2>Saat kamu mengirim pesan</h2><p>Pesan dan hasil kuismu diproses oleh layanan AI pihak ketiga untuk membuat balasan. Layanan ini menyimpan percakapan agar chat bisa berlanjut. SisiDiri tidak menyimpan salinan riwayatnya.</p><p class="callout mt-4">Menutup tab atau mengulang kuis tidak otomatis menghapus percakapan di layanan AI. Penyimpanan datanya mengikuti ketentuan dan pengaturan layanan tersebut.</p><h2>Kenapa ada batas permintaan?</h2><p>Server menghitung jumlah permintaan dari alamat IP untuk mencegah penggunaan berlebihan. Hitungan ini disimpan sementara tanpa isi jawaban atau pesan. Layanan hosting dan jaringan dapat mencatat informasi koneksi sesuai pengaturannya.</p><h2>Apa yang sebaiknya tidak dikirim?</h2><p>Hindari mengirim nama lengkap, alamat, nomor kontak, informasi kesehatan pribadi, atau data rahasia lewat chat. Jangan bagikan akses chatmu kepada orang lain.</p><a class="button button-primary" href="${state.result ? '/hasil' : '/kuis'}">${state.result ? 'Kembali ke hasil' : 'Ikuti kuis'} ↗</a></article></div></div>`;
-}
+function showPrivacy() { main.innerHTML = privacyMarkup(Boolean(state.result)); }
 
 setInterval(() => {
   if (state.result && !state.chat.expired && tokenExpired()) { state.chat.expired = true; renderChat(); }

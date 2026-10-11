@@ -16,9 +16,12 @@ test('token mengikat hasil dan ID, rotasi mempertahankan expiry absolut', () => 
   now += 120;
   const advanced = service.verify(service.advance(first, 'interaction-1'));
   assert.equal(advanced.previousInteractionId, 'interaction-1');
+  assert.equal(advanced.turn, 1);
+  assert.equal(advanced.sid, first.sid);
+  assert.notEqual(service.verify(service.issue(result)).sid, first.sid);
   assert.equal(advanced.exp, 13600);
   assert.deepEqual(advanced.dimensions, result.dimensions);
-  // Stateless: token awal tetap valid, tanpa mengklaim pencabutan atau anti-replay.
+  // Signature lama tetap autentik; freshness diperiksa guard bersama saat request.
   assert.equal(service.verify(token).previousInteractionId, null);
   now = 13600;
   assert.throws(() => service.verify(token), { status: 401 });

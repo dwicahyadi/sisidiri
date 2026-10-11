@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+docs/
+output/
+tmp/
+tests/
+.npm-cache/
+coverage/
+*.log

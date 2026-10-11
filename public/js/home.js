@@ -9,7 +9,7 @@ export function homeMarkup() {
         <p class="home-meta">Kurang lebih 3 menit <span aria-hidden="true">·</span> Tanpa akun</p>
       </div>
       <figure class="home-art">
-        <img src="/assets/home.png" width="1536" height="1024" alt="Ilustrasi orang muda berdiri di depan cermin dan tersenyum pada bayangannya." fetchpriority="high">
+        <img src="/assets/home.webp" width="1536" height="1024" alt="Ilustrasi orang muda berdiri di depan cermin dan tersenyum pada bayangannya." fetchpriority="high">
         
       </figure>
     </section>

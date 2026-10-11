@@ -27,3 +27,7 @@ Pemeriksaan tersisa: instal SDK dari npm dengan jaringan tersedia, isi key lokal
 Lakukan seluruh pemeriksaan browser/live di atas, review bank pertanyaan dan deskripsi dengan calon pengguna, serta uji build produksi/HTTPS/trusted proxy pada hosting yang dipilih. Periksa storage browser, cache, log server/hosting, dan SQLite. Lengkapi dependency lock SDK setelah diinstal. Jangan menyatakan materi telah divalidasi psikometrik atau ditinjau ahli tanpa bukti.
 
 Kuota keras server, pencabutan token individual, dan pencegahan replay tetap di luar MVP. Tidak ada deployment atau publikasi pada pekerjaan ini.
+
+## Deployment Vercel dan SEO - tersedia di codebase
+
+Entrypoint serverless, build master read-only, HTML SEO per route, metadata sosial, robots/sitemap, analytics page view produksi, dan WebP tersedia. Pemeriksaan kode/build/browser tercatat pada SELF_REVIEW.md; aktivasi dashboard dan verifikasi deployment publik mengikuti [DEPLOYMENT.md](DEPLOYMENT.md).

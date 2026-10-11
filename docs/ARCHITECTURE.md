@@ -42,7 +42,7 @@ Token membuktikan hasil pernah divalidasi dan dihitung server; bukan identitas a
 
 Token memakai HMAC-SHA256 dengan `CHAT_TOKEN_SECRET` backend terpisah. Payload mengikat tipe, empat skor, versi/purpose, waktu, dan interaction ID terakhir (null pada awal). Masa berlaku absolut 60 menit sejak scoring; token pengganti tidak memperpanjangnya. Verifikasi dilakukan sebelum provider dipanggil. Format serta aturan validasi ada di [API_CONTRACT.md](API_CONTRACT.md).
 
-Backend tidak menyimpan sesi, hasil, atau rantai ID; setiap request memperoleh konteks dari token dan master. Token lama tidak otomatis tercabut saat token baru diterbitkan. Kuota 25 dijamin UI; backend menerapkan rate IP 30 request/10 menit serta validasi panjang/body/token. Enforcement keras per konsultasi memerlukan perubahan desain dan berada di luar MVP. Jangan menambah penyimpanan sesi untuk tujuan itu secara diam-diam.
+Server membatasi 25 balasan sukses per sesi dengan counter atomik dan token v2 (ID sesi acak, nomor giliran). Token lama ditolak setelah sukses; request bersamaan ditolak 409. Redis bersama wajib di produksi, tanpa fallback ke memori. Rate IP chat 30/10 menit dan kuis 120/10 menit berlaku lintas instance. CHAT_DAILY_LIMIT default 200 membatasi percobaan provider per hari UTC, termasuk kegagalan. Ini bukan autentikasi atau bukti pengguna manusia. Redis hanya menyimpan ID sesi acak, nomor giliran/status request sampai expiry absolut 60 menit, HMAC alamat IP untuk penghitung 10 menit, dan agregat harian sampai pergantian hari UTC + 60 detik. Jawaban, hasil, chat, token, dan interaction ID tidak disimpan di Redis, SQLite, analytics, atau log aplikasi. Memori lokal hanya untuk development.
 
 ## Integrasi Gemini
 
@@ -64,8 +64,20 @@ Produksi mewajibkan `GEMINI_API_KEY`, `GEMINI_MODEL`, dan `CHAT_TOKEN_SECRET`, s
 
 ## Frontend dan Disclaimer
 
-Beranda diprarender oleh build dari template yang juga dipakai browser; interaksi berikutnya memakai ES modules dan History API. Halaman tersedia pada `/`, `/kuis`, `/hasil`, `/tentang`, dan `/privasi`. Catatan akurasi kecil tampil di beranda/kuis/hasil, dengan penjelasan ahli dan batas instrumen pada `/tentang`. Teks chat dirender memakai textContent, tanpa HTML provider. CSS dibangun lokal; tidak ada CDN, font eksternal, atau analytics. Pemeriksaan browser pada lingkungan ini terhalang pembatasan port lokal dan akses file browser.
+Beranda diprarender oleh build dari template yang juga dipakai browser; interaksi berikutnya memakai ES modules dan History API. Halaman tersedia pada `/`, `/kuis`, `/hasil`, `/tentang`, dan `/privasi`. Catatan akurasi kecil tampil sekali di beranda; hasil menautkan Tentang, dengan penjelasan ahli dan batas instrumen pada `/tentang`. Teks chat dirender memakai textContent, tanpa HTML provider. CSS dibangun lokal; tidak ada font eksternal. Deployment Vercel memakai CDN untuk aset dan HTML, serta analytics page view produksi tanpa konten kuis/chat. Pemeriksaan browser pada lingkungan ini terhalang pembatasan port lokal dan akses file browser.
 
 ## Pembaruan UI 11 Oktober 2026
 
 Kuis memilih-langsung-maju, hasil memakai persentase dua warna dan tab, serta chat menggunakan native dialog mengambang/layar penuh. Ilustrasi tipe berada di public/assets/types dengan kode uppercase PNG. API dan state memori tetap. Detail dan hasil pemeriksaan browser terbaru ada di [docs/QUIZ_RESULT_DESIGN.md](QUIZ_RESULT_DESIGN.md); catatan pembatasan browser di atas merupakan status implementasi awal.
+
+## Deployment Vercel
+
+Entrypoint root app.js mengekspor Express; src/server.js tetap untuk server lokal. npm run build:vercel membuat SQLite master di build dan menyertakannya ke function; runtime read-only. HTML lima route, robots dan sitemap dibuat saat build. Tentang/Privasi memakai template yang sama di server dan browser. Metadata SPA mengikuti route; canonical ditentukan SITE_URL/system env, bukan Host request. WebP mengurangi transfer, PNG tetap sebagai sumber. Analytics page view produksi diizinkan pengguna, tanpa custom event atau data kuis/chat; preview nonaktif. Batas per-instance rate limiter tetap berlaku pada serverless. Lihat [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## Pembaruan keamanan 11 Oktober 2026
+
+Server membatasi 25 balasan sukses per sesi dengan counter atomik dan token v2 (ID sesi acak, nomor giliran). Token lama ditolak setelah sukses; request bersamaan ditolak 409. Redis bersama wajib di produksi, tanpa fallback ke memori. Rate IP chat 30/10 menit dan kuis 120/10 menit berlaku lintas instance. CHAT_DAILY_LIMIT default 200 membatasi percobaan provider per hari UTC, termasuk kegagalan. Ini bukan autentikasi atau bukti pengguna manusia.
+
+Redis hanya menyimpan ID sesi acak, nomor giliran/status request sampai expiry absolut 60 menit, HMAC alamat IP untuk penghitung 10 menit, dan agregat harian sampai pergantian hari UTC + 60 detik. Jawaban, hasil, chat, token, dan interaction ID tidak disimpan di Redis, SQLite, analytics, atau log aplikasi. Memori lokal hanya untuk development.
+
+Counter hanya bertambah setelah respons provider sukses. Kegagalan provider melepas status pending untuk retry manual, tetap menghabiskan kuota harian. Redis timeout/error mengembalikan 503; proses terputus saat pending tidak otomatis membuka ulang sesi. Token v1 ditolak, pengguna lama perlu mengulang kuis. Berbagi token masih berbagi akses, bukan membuat identitas baru.

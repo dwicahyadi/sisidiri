@@ -11,6 +11,7 @@ import { createTokenService } from '../src/security/chat-token.js';
 import { createApp } from '../src/app.js';
 import { questions } from '../database/questions.js';
 import { HttpError } from '../src/middleware/errors.js';
+import { MemoryGuard } from '../src/infrastructure/abuse/guard.js';
 import { requestApp } from './helpers/http.js';
 
 let directory, path, repository, app, beforeBytes;
@@ -129,4 +130,52 @@ test('master invalid menghentikan readiness', () => {
   db.prepare('UPDATE questions SET is_active=0 WHERE id=1').run();
   db.close();
   assert.throws(() => new MasterRepository(brokenPath), /Master kuis tidak konsisten/);
+});
+
+test('API menolak replay dan pesan ke-26 sebelum memanggil provider', async () => {
+  let providerCalls = 0;
+  const protectedApp = createApp({ config: {}, repository, tokens: createTokenService(randomBytes(32)), rateLimits: { chat: 1000 }, gemini: { available: true, async create() { providerCalls++; return { id: `safe-${providerCalls}`, message: 'Halo Kak' }; } } });
+  const send = async (route, body) => {
+    const response = await requestApp(protectedApp, route, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    return { status: response.status, body: await response.json() };
+  };
+  try {
+    const scored = await send('/api/quiz/score', { answers: validAnswers });
+    const original = scored.body.data.chatToken;
+    let token = original, id;
+    for (let turn = 0; turn < 25; turn++) {
+      const answer = await send('/api/chat', { message: 'Halo', chatToken: token, ...(id ? { previous_interaction_id: id } : {}) });
+      assert.equal(answer.status, 200);
+      token = answer.body.chatToken; id = answer.body.id;
+    }
+    assert.equal((await send('/api/chat', { message: 'Halo', chatToken: token, previous_interaction_id: id })).status, 401);
+    for (let i = 0; i < 25; i++) assert.equal((await send('/api/chat', { message: 'Replay', chatToken: original })).status, 401);
+    assert.equal(providerCalls, 25);
+  } finally { protectedApp.locals.close(); }
+});
+
+
+test('dua instance berbagi guard menolak concurrency dan Redis gagal sebelum provider', async () => {
+  const guard = new MemoryGuard();
+  const tokens = createTokenService(randomBytes(32));
+  let release, started, calls = 0;
+  const entered = new Promise((resolve) => { started = resolve; });
+  const pending = new Promise((resolve) => { release = resolve; });
+  const provider = { available: true, async create() { calls++; started(); await pending; return { id: 'parallel-1', message: 'Halo' }; } };
+  const first = createApp({ config: {}, repository, tokens, gemini: provider, guard });
+  const second = createApp({ config: {}, repository, tokens, gemini: provider, guard });
+  const send = (app, route, body) => requestApp(app, route, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  try {
+    const scored = await (await send(first, '/api/quiz/score', { answers: validAnswers })).json();
+    const body = { message: 'Halo', chatToken: scored.data.chatToken };
+    const running = send(first, '/api/chat', body);
+    await entered;
+    assert.equal((await send(second, '/api/chat', body)).status, 409);
+    release();
+    assert.equal((await running).status, 200);
+    assert.equal((await send(second, '/api/chat', body)).status, 401);
+    guard.rate = async () => { throw new HttpError(503, 'Tidak tersedia'); };
+    assert.equal((await send(second, '/api/chat', body)).status, 503);
+    assert.equal(calls, 1);
+  } finally { release(); first.locals.close(); second.locals.close(); }
 });

@@ -16,7 +16,7 @@ Buka `http://127.0.0.1:3000`. `setup` membuat `.env` dengan secret acak tanpa me
 
 ## Mengaktifkan Konsultasi Gemini
 
-Kuis dapat berjalan tanpa Gemini. SDK bersifat optional agar instalasi lokal tanpa AI tetap berguna. Lingkungan kerja awal tidak dapat mengunduh SDK karena akses registry dibatasi; lockfile awal belum memuat dependency tree SDK tersebut. Dari terminal dengan akses npm, jalankan:
+Kuis dapat berjalan tanpa Gemini. SDK sudah tercantum dalam lockfile sebagai optional dependency dan dipasang melalui `npm ci`. Jika instalasi melewatkan dependency optional, pasang melalui:
 
 ```bash
 npm install --save-optional --save-exact @google/genai@2.28.0
@@ -44,13 +44,13 @@ Produksi (`NODE_ENV=production`) mewajibkan key, model, secret tetap, dan SDK. J
 
 Dokumen produk, arsitektur, kontrak API, dan panduan desain berada di `docs/`. `README.md` dan `AGENTS.md` tetap di root. Template konfigurasi tersedia di [.env.example](.env.example); gunakan `npm run setup`, lalu isi konfigurasi pada `.env`.
 
-Halaman: `/`, `/kuis`, `/hasil`, `/tentang`, dan `/privasi`. Catatan kecil akurasi tampil di beranda, kuis, dan hasil. Halaman tentang menjelaskan batasan dan perlunya penilaian ahli; privasi dijelaskan sebelum chat.
+Halaman: `/`, `/kuis`, `/hasil`, `/tentang`, dan `/privasi`. Catatan kecil akurasi tampil sekali di beranda; hasil menautkan penjelasan. Halaman tentang menjelaskan batasan dan perlunya penilaian ahli; privasi dijelaskan sebelum chat.
 
 ## Batas MVP dan Status Verifikasi
 
-UI membatasi **25 pesan sukses**; server stateless memvalidasi token, payload, dan rate IP 30 request/10 menit. Token berlaku absolut 60 menit; tidak ada jaminan kuota keras server atau pencegahan replay. Gemini menyimpan state sesuai layanannya; menutup tab tidak otomatis menghapusnya. Aplikasi tidak menyimpan data pengguna ke SQLite, browser storage, analytics, atau log.
+Server membatasi 25 balasan sukses per sesi dengan counter atomik dan token v2 (ID sesi acak, nomor giliran). Token lama ditolak setelah sukses; request bersamaan ditolak 409. Redis bersama wajib di produksi, tanpa fallback ke memori. Rate IP chat 30/10 menit dan kuis 120/10 menit berlaku lintas instance. CHAT_DAILY_LIMIT default 200 membatasi percobaan provider per hari UTC, termasuk kegagalan. Ini bukan autentikasi atau bukti pengguna manusia. Redis hanya menyimpan ID sesi acak, nomor giliran/status request sampai expiry absolut 60 menit, HMAC alamat IP untuk penghitung 10 menit, dan agregat harian sampai pergantian hari UTC + 60 detik. Jawaban, hasil, chat, token, dan interaction ID tidak disimpan di Redis, SQLite, analytics, atau log aplikasi. Memori lokal hanya untuk development. Layanan AI menyimpan konteks sesuai kebijakannya.
 
-Build, seed, pemeriksaan syntax, serta test unit/integrasi dapat dijalankan. Test API memakai HTTP pipeline Express di dalam proses agar tidak membutuhkan port; Gemini dimock. Pemeriksaan browser dan Gemini live belum selesai: sandbox menolak port lokal dengan EPERM, browser menolak file URL, dan SDK/key belum tersedia. Jangan menyebut hasil ini sebagai rilis yang sudah diverifikasi di browser.
+Build, seed, syntax, serta test unit/integrasi tersedia. API diuji melalui pipeline Express tanpa port, provider dimock. Pemeriksaan desktop/360 px dan satu pesan AI live pernah berhasil; deployment Vercel dan penerimaan analytics harus diperiksa setelah deploy.
 
 ## Dokumen
 
@@ -70,3 +70,7 @@ Kuis langsung maju saat pilihan diklik, hasil memakai persentase dua warna dan t
 ## Bahasa dan Tampilan SisiDiri
 
 Nama aplikasi menggunakan SisiDiri dengan ikon mark.svg. Bahasa untuk Gen Z/milenial dan standar keterbacaan dicatat di [docs/COPY_GUIDE.md](docs/COPY_GUIDE.md). Setelah perubahan konten master, jalankan `npm run db:seed`; CSS dan home memerlukan `npm run build`. Restart server untuk perubahan instruction/error backend.
+
+## Deploy Vercel dan SEO
+
+Ikuti [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) untuk konfigurasi environment, analytics gratis, SEO, dan pemeriksaan setelah deploy. `npm run build:vercel` membuat master read-only dan HTML per halaman; `app.js` adalah entrypoint serverless. Aset frontend memakai WebP; sumber PNG dipertahankan untuk penggantian ilustrasi. Jalankan build setelah mengubah konten atau domain. Setelah mengganti PNG, jalankan `npm run assets:optimize` (Python + Pillow), lalu build dan commit WebP/JPG hasilnya.

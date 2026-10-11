@@ -1,15 +1,6 @@
-import { existsSync } from 'node:fs';
-import { loadConfig } from './config/env.js';
-import { MasterRepository } from './infrastructure/database/repository.js';
-import { createGeminiClient } from './infrastructure/gemini/client.js';
-import { createTokenService } from './security/chat-token.js';
-import { createApp } from './app.js';
+import { createRuntime } from './runtime.js';
 
-const config = loadConfig();
-if (!existsSync(config.databasePath)) throw new Error('Database belum tersedia. Jalankan npm run db:seed terlebih dahulu.');
-const repository = new MasterRepository(config.databasePath);
-const gemini = await createGeminiClient(config);
-const app = createApp({ config, repository, tokens: createTokenService(config.tokenSecret), gemini });
+const { app, config, repository, gemini } = await createRuntime();
 const server = app.listen(config.port, config.host, () => {
   console.log(`SisiDiri: http://${config.host}:${config.port}`);
   if (config.ephemeralSecret) console.log('Mode lokal: token berakhir jika server dimulai ulang. Atur CHAT_TOKEN_SECRET untuk secret tetap.');

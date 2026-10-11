@@ -4,7 +4,7 @@
 **Status:** Implementasi MVP tersedia; alur browser desktop/360 px dan satu pesan Gemini live diperiksa, verifikasi rilis belum lengkap  
 **Platform:** Web responsif
 
-**Keputusan 10 Oktober 2026:** frontend vanilla ES modules, Bahasa Indonesia, visual profesional/tenang, chat stateless dengan token bertanda tangan, batas 25 pesan di UI, dan pertanyaan orisinal yang disusun untuk proyek ini. Pengguna mengizinkan implementasi pada 10 Oktober 2026. Tambahkan catatan singkat tentang keterbatasan akurasi dan halaman penjelasan.
+**Keputusan 10 Oktober 2026:** frontend vanilla ES modules, Bahasa Indonesia, visual profesional/tenang, chat dengan token bertanda tangan, batas 25 balasan di UI dan server (pembaruan keamanan 11 Oktober 2026), dan pertanyaan orisinal yang disusun untuk proyek ini. Pengguna mengizinkan implementasi pada 10 Oktober 2026. Tambahkan catatan singkat tentang keterbatasan akurasi dan halaman penjelasan.
 
 ## 1. Ringkasan Produk
 
@@ -105,7 +105,7 @@ Pengunjung umum yang ingin mengenali kecenderungan karakter dan berdiskusi singk
   - Tidak mendiagnosis gangguan mental, memberi terapi, atau memberi keputusan penting atas nama pengguna.
   - Menyarankan bantuan profesional bila pengguna membahas risiko melukai diri sendiri/orang lain atau krisis.
   - Menjawab dalam Bahasa Indonesia kecuali pengguna meminta bahasa lain; tidak meminta identitas, data sensitif, atau seluruh jawaban kuis.
-- UI membatasi 25 pesan pengguna yang memperoleh respons sukses; pesan ke-26 diblokir. Pesan gagal tidak menambah penghitung UI. Server memvalidasi maksimal 500 Unicode code points per pesan setelah trim, batas body, token, dan rate IP. Server stateless tidak menjamin batas keras 25 pesan per konsultasi atau mencegah replay/percabangan token.
+- Server membatasi 25 balasan sukses per sesi dengan counter atomik dan token v2 (ID sesi acak, nomor giliran). Token lama ditolak setelah sukses; request bersamaan ditolak 409. Redis bersama wajib di produksi, tanpa fallback ke memori. Rate IP chat 30/10 menit dan kuis 120/10 menit berlaku lintas instance. CHAT_DAILY_LIMIT default 200 membatasi percobaan provider per hari UTC, termasuk kegagalan. Ini bukan autentikasi atau bukti pengguna manusia.
 - Respons AI ditargetkan satu paragraf pendek, biasanya 1–3 kalimat atau 15–45 kata; paragraf kedua hanya bila benar-benar perlu. Ini target gaya, bukan batas potong teks; jangan memotong respons secara buta. Krisis atau pertanyaan yang memerlukan kejelasan boleh dijawab lebih panjang.
 - UI menampilkan penghitung seperti `3/25 pesan`, status memproses, dan pesan error yang ramah; hanya satu request chat boleh berjalan. Saat batas tercapai atau token kedaluwarsa, pengguna dapat memulai ulang kuis.
 - Chat tidak perlu memiliki tombol hapus riwayat karena riwayat hanya berada di memori halaman selama sesi berjalan.
@@ -119,7 +119,7 @@ Pengunjung umum yang ingin mengenali kecenderungan karakter dan berdiskusi singk
 - Database master: SQLite.
 - AI SDK: `@google/genai`.
 - API AI yang wajib digunakan: **Gemini Interactions API** melalui `ai.interactions.create()`; jangan menggunakan `models.generateContent()`.
-- Backend stateless untuk konsultasi: tidak ada penyimpanan sesi atau percakapan. Penghitung rate limit IP sementara di memori proses diperbolehkan tanpa body request, hasil kuis, token, atau interaction ID.
+- Redis hanya menyimpan ID sesi acak, nomor giliran/status request sampai expiry absolut 60 menit, HMAC alamat IP untuk penghitung 10 menit, dan agregat harian sampai pergantian hari UTC + 60 detik. Jawaban, hasil, chat, token, dan interaction ID tidak disimpan di Redis, SQLite, analytics, atau log aplikasi. Memori lokal hanya untuk development.
 
 ### 7.2 Integrasi Gemini Interactions API
 
@@ -159,7 +159,7 @@ const nextInteraction = await ai.interactions.create({
 - Payload memuat versi, purpose khusus chat, waktu terbit/kedaluwarsa, tipe, empat skor, dan `previousInteractionId` (null pada token awal). Detail format dan pemeriksaan ada di [API_CONTRACT.md](API_CONTRACT.md).
 - Signature membuktikan hasil pernah divalidasi endpoint scoring, bukan identitas pengguna atau bukti manusia mengisi kuis. Token adalah bearer credential dan dapat dibaca pemegangnya; signature tidak mengenkripsi payload.
 - Verifikasi signature, expiry, schema skor, dan kecocokan interaction ID sebelum memanggil Gemini. Token hilang, invalid, atau kedaluwarsa tidak memicu panggilan provider.
-- Token lama tidak dapat dicabut satu per satu tanpa state. Replay/percabangan tidak dicegah dalam MVP; kontrol biaya menggunakan rate limit IP dan konfigurasi provider. Batas keras per konsultasi memerlukan desain state tambahan di luar keputusan MVP ini.
+- Counter Redis menolak token lama setelah sukses dan mencegah percabangan bersamaan. Kuota provider tetap diperlukan untuk membatasi biaya; sesi baru tidak membuktikan pengguna baru.
 
 ## 8. Kontrak API
 
@@ -281,7 +281,7 @@ Field `strengths`, `challenges`, dan `reflection_tips` disimpan sebagai JSON TEX
 - Pengujian adaptif atau diagnosis psikologis.
 - Pembayaran, admin panel, analitik identitas pengguna, ekspor PDF, dan berbagi ke sosial media.
 - Rekomendasi klinis atau layanan darurat langsung.
-- Enforcement keras 25 pesan di backend, pencabutan token individual, dan pencegahan replay berbasis penyimpanan sesi.
+- Akun pengguna, pemulihan percakapan, dan autentikasi manusia.
 
 ## 13. Kriteria Penerimaan
 
@@ -292,7 +292,7 @@ Field `strengths`, `challenges`, dan `reflection_tips` disimpan sebagai JSON TEX
 5. Request chat pertama memakai `ai.interactions.create()` dan menghasilkan respons dengan `id: interaction.id`.
 6. Request chat berikutnya memakai token pengganti dan `previous_interaction_id` yang cocok dengan `id` respons sebelumnya; setiap interaksi mengirim instruction server.
 7. Respons `/api/chat` sukses selalu berisi `success`, `message`, `id`, dan `chatToken` pengganti.
-8. UI mengizinkan 25 pesan sukses dan memblokir pesan ke-26; server memvalidasi panjang, token, body, serta rate limit. Tidak ada klaim batas keras per konsultasi di server.
+8. UI dan server mengizinkan 25 balasan sukses; replay dan request bersamaan ditolak sebelum provider. Redis gagal menyebabkan 503, tanpa panggilan AI.
 9. API key Gemini tidak muncul di source frontend atau respons API.
 10. Aplikasi menampilkan penafian MBTI non-klinis, tidak menjamin akurasi, menyebut perlunya penilaian ahli, serta menampilkan informasi privasi sebelum konsultasi AI. Menu `/tentang` menjelaskan bahwa bank belum divalidasi psikometrik.
 11. Token invalid/kedaluwarsa atau interaction ID tidak cocok ditolak; signature tidak dianggap sebagai pencegahan replay.
@@ -300,7 +300,7 @@ Field `strengths`, `challenges`, dan `reflection_tips` disimpan sebagai JSON TEX
 
 ## 14. Keputusan dan Langkah Berikutnya
 
-Sudah diputuskan: Bahasa Indonesia, visual profesional/tenang, frontend vanilla ES modules, token stateless, batas 25 pesan di UI, ringkasan dari master server, dan pertanyaan orisinal yang disiapkan dalam dokumentasi. Pertanyaan tidak diambil dari tes resmi atau bank berlisensi; belum ada validasi psikometrik atau tinjauan psikolog.
+Sudah diputuskan: Bahasa Indonesia, visual profesional/tenang, frontend vanilla ES modules, token bertanda tangan dengan counter bersama, batas 25 balasan UI/server, ringkasan dari master server, dan pertanyaan orisinal yang disiapkan dalam dokumentasi. Pertanyaan tidak diambil dari tes resmi atau bank berlisensi; belum ada validasi psikometrik atau tinjauan psikolog.
 
 Implementasi awal memakai Node.js 22.13+, Express 5.1.0, Zod 4.3.5, Tailwind 4.1.18, SQLite bawaan Node (`node:sqlite`), serta default model `gemini-2.5-flash`. Sebanyak 16 deskripsi tipe orisinal sudah tersedia di `database/personality-types.js`. SDK Google bersifat optional untuk menjalankan kuis lokal tanpa AI; produksi wajib memiliki SDK dan konfigurasi Gemini lengkap. SDK kini tersedia; alur browser serta satu pesan Gemini live telah diperiksa pada 11 Oktober 2026. Tinjau UI, keterbacaan, keseimbangan pertanyaan, dan Gemini live sebelum rilis; jangan mengklaim tinjauan psikolog tanpa bukti.
 
@@ -309,3 +309,15 @@ Dokumen pendukung: [ARCHITECTURE.md](ARCHITECTURE.md), [API_CONTRACT.md](API_CON
 ## Pembaruan Bahasa dan Brand — 11 Oktober 2026
 
 Nama aplikasi SisiDiri dengan ikon mark.svg. Redaksi ditujukan ke Gen Z dan milenial: konkret, singkat, memakai kamu/aku, tanpa slogan dan jargon motivasi. Font dipertahankan; ukuran teks isi diperbesar menjadi 16–18 px dengan kontras teks sekunder lebih baik. Panduan: [docs/COPY_GUIDE.md](COPY_GUIDE.md). Bank pertanyaan v1.1 mempertahankan ID/pole; seluruh deskripsi tipe dan master diperbarui.
+
+## Kesiapan publik di Vercel - 11 Oktober 2026
+
+Pengguna memilih Vercel gratis untuk proyek tanpa monetisasi dan mengizinkan analytics. Home, Tentang, dan Privasi memiliki HTML SEO, canonical, metadata sosial, serta sitemap. Kuis/hasil noindex; preview tidak diindeks dan tidak mengirim analytics. Analytics hanya page view agregat, tanpa jawaban, hasil tipe, chat, token, atau query/hash URL. Template privasi menjelaskannya. Tidak ada custom event yang memerlukan paket berbayar. Master SQLite dibuat saat build, runtime read-only; app.js menjadi entrypoint Vercel. Frontend memakai WebP dan OG image 1200 x 630. CHAT_ENABLED=false mematikan AI setelah redeploy; rate dan counter sesi memakai Redis bersama sesuai pembaruan keamanan. Konfigurasi domain/secret/provider serta pemeriksaan produksi mengikuti [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## Pembaruan keamanan 11 Oktober 2026
+
+Server membatasi 25 balasan sukses per sesi dengan counter atomik dan token v2 (ID sesi acak, nomor giliran). Token lama ditolak setelah sukses; request bersamaan ditolak 409. Redis bersama wajib di produksi, tanpa fallback ke memori. Rate IP chat 30/10 menit dan kuis 120/10 menit berlaku lintas instance. CHAT_DAILY_LIMIT default 200 membatasi percobaan provider per hari UTC, termasuk kegagalan. Ini bukan autentikasi atau bukti pengguna manusia.
+
+Redis hanya menyimpan ID sesi acak, nomor giliran/status request sampai expiry absolut 60 menit, HMAC alamat IP untuk penghitung 10 menit, dan agregat harian sampai pergantian hari UTC + 60 detik. Jawaban, hasil, chat, token, dan interaction ID tidak disimpan di Redis, SQLite, analytics, atau log aplikasi. Memori lokal hanya untuk development.
+
+Counter hanya bertambah setelah respons provider sukses. Kegagalan provider melepas status pending untuk retry manual, tetap menghabiskan kuota harian. Redis timeout/error mengembalikan 503; proses terputus saat pending tidak otomatis membuka ulang sesi. Token v1 ditolak, pengguna lama perlu mengulang kuis. Berbagi token masih berbagi akses, bukan membuat identitas baru.

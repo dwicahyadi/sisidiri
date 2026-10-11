@@ -16,5 +16,6 @@ export function errorHandler(error, req, res, next) {
     status = 400;
     message = 'Format data tidak valid.';
   }
+  if (error instanceof HttpError && error.retryAfter) res.set('Retry-After', String(error.retryAfter));
   res.status(status).json({ success: false, message });
 }

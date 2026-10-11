@@ -3,7 +3,7 @@ import { chatSchema } from './schema.js';
 import { consultantInstruction } from './instruction.js';
 import { HttpError } from '../../middleware/errors.js';
 
-export function chatRoutes({ repository, tokens, gemini }) {
+export function chatRoutes({ repository, tokens, gemini, guard }) {
   const router = Router();
   router.post('/', async (req, res) => {
     if (!req.body?.chatToken) throw new HttpError(401, 'Isi kuis dulu sebelum membuka chat.');
@@ -17,8 +17,18 @@ export function chatRoutes({ repository, tokens, gemini }) {
     if (!gemini.available) throw new HttpError(503, 'Chat AI belum tersedia. Kamu tetap bisa membaca hasil kuismu.');
     const personality = repository.getType(payload.type);
     if (!personality) throw new Error('Master tipe tidak tersedia.');
-    const answer = await gemini.create({ instruction: consultantInstruction(payload, personality), message, previousId });
-    res.json({ success: true, message: answer.message, id: answer.id, chatToken: tokens.advance(payload, answer.id) });
+    const owner = await guard.claim(payload);
+    let answer;
+    try {
+      answer = await gemini.create({ instruction: consultantInstruction(payload, personality), message, previousId });
+    } catch (error) {
+      // Kegagalan tetap menghabiskan kuota harian provider; retry dibatasi rate bersama.
+      await guard.finish(payload, owner, false);
+      throw error;
+    }
+    const nextToken = tokens.advance(payload, answer.id);
+    await guard.finish(payload, owner, true);
+    res.json({ success: true, message: answer.message, id: answer.id, chatToken: nextToken });
   });
   return router;
 }

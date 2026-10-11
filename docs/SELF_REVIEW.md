@@ -52,3 +52,11 @@ Kuota 25 pesan sukses dijamin UI, bukan server stateless. Token dapat direplay/d
 - [Node.js Crypto](https://nodejs.org/api/crypto.html).
 
 Dokumentasi teknis diperiksa 10 Oktober 2026. Payload token, expiry, dan kuota merupakan keputusan proyek. Tidak ada deployment, publikasi, atau commit pada pekerjaan ini.
+
+## Pembaruan Review UI — 11 Oktober 2026
+
+Home, kuis, hasil, dan chat diperbarui sesuai permintaan pengguna. Disclaimer akurasi tidak lagi diulang pada kuis/hasil/chat; hasil menautkan Tentang. Server lokal milik pengguna kini dapat diakses melalui browser Chrome: kuis 20 pertanyaan, kembali/ganti pilihan, hasil persentase, tab keyboard, kontrol dialog, dan viewport 360 px diperiksa. Satu pesan contoh Gemini live berhasil. Draft tetap ada saat dialog diperkecil. Build, syntax, serta enam berkas test lulus. Batas awal jaringan/key/SDK di atas adalah catatan historis; lihat [docs/QUIZ_RESULT_DESIGN.md](QUIZ_RESULT_DESIGN.md) untuk cakupan pemeriksaan terbaru dan batasnya.
+
+## Review SisiDiri — Bahasa dan Keterbacaan
+
+Nama aplikasi di UI, metadata, judul browser, dan chat diubah menjadi SisiDiri; ikon tetap mark.svg. Redaksi home/kuis/hasil/chat/tentang/privasi dan error dipersingkat, serta 16 profil dan 20 pertanyaan disunting tanpa mengubah ID/pole. Bank dokumentasi selaras seed. Font tetap; teks isi 16–18 px, label lebih besar, warna sekunder lebih gelap. Build, syntax, seed, serta enam berkas test lulus. Browser mengonfirmasi redaksi terbaru, alur kuis dan master baru, serta layout desktop/360 px tanpa overflow; capture screenshot timeout. Panduan: docs/COPY_GUIDE.md.

@@ -1,20 +1,20 @@
-// Konten orisinal; acuan editorial: QUESTION_BANK.md.
+// Konten orisinal; acuan editorial: docs/QUESTION_BANK.md.
 export const questions = [
   {
     "id": 1,
     "dimensionCode": "EI",
     "sortOrder": 1,
-    "text": "Setelah hari yang melelahkan, cara beristirahat yang lebih sering Anda pilih adalah…",
+    "text": "Setelah hari yang melelahkan, kamu lebih sering ingin…",
     "isRandomizable": false,
     "options": [
       {
         "id": 1,
-        "text": "Menghabiskan waktu bersama orang yang saya sukai.",
+        "text": "Ketemu orang yang aku suka.",
         "pole": "E"
       },
       {
         "id": 2,
-        "text": "Menikmati waktu sendiri dalam suasana tenang.",
+        "text": "Sendirian dulu di tempat yang tenang.",
         "pole": "I"
       }
     ]
@@ -23,17 +23,17 @@ export const questions = [
     "id": 2,
     "dimensionCode": "EI",
     "sortOrder": 2,
-    "text": "Saat mencari ide untuk persoalan sehari-hari, Anda lebih nyaman…",
+    "text": "Saat mencari ide untuk masalah sehari-hari, kamu lebih nyaman…",
     "isRandomizable": false,
     "options": [
       {
         "id": 3,
-        "text": "Memikirkannya sendiri terlebih dahulu.",
+        "text": "Memikirkannya sendiri dulu.",
         "pole": "I"
       },
       {
         "id": 4,
-        "text": "Membicarakannya dengan orang lain terlebih dahulu.",
+        "text": "Ngobrol dengan orang lain dulu.",
         "pole": "E"
       }
     ]
@@ -42,17 +42,17 @@ export const questions = [
     "id": 3,
     "dimensionCode": "EI",
     "sortOrder": 3,
-    "text": "Ketika berada dalam pertemuan dengan beberapa orang baru, Anda cenderung…",
+    "text": "Saat bertemu beberapa orang baru, kamu biasanya…",
     "isRandomizable": false,
     "options": [
       {
         "id": 5,
-        "text": "Memulai percakapan untuk mengenal mereka.",
+        "text": "Mulai ngobrol untuk mengenal mereka.",
         "pole": "E"
       },
       {
         "id": 6,
-        "text": "Mengamati dahulu sebelum ikut percakapan.",
+        "text": "Mengamati dulu sebelum ikut ngobrol.",
         "pole": "I"
       }
     ]
@@ -61,17 +61,17 @@ export const questions = [
     "id": 4,
     "dimensionCode": "EI",
     "sortOrder": 4,
-    "text": "Saat ada waktu luang pada akhir pekan, Anda lebih sering ingin…",
+    "text": "Kalau punya waktu luang di akhir pekan, kamu lebih sering ingin…",
     "isRandomizable": false,
     "options": [
       {
         "id": 7,
-        "text": "Memiliki waktu pribadi untuk kegiatan sendiri.",
+        "text": "Melakukan kegiatan sendiri.",
         "pole": "I"
       },
       {
         "id": 8,
-        "text": "Mengatur kegiatan bersama teman atau keluarga.",
+        "text": "Bikin kegiatan bareng teman atau keluarga.",
         "pole": "E"
       }
     ]
@@ -80,17 +80,17 @@ export const questions = [
     "id": 5,
     "dimensionCode": "EI",
     "sortOrder": 5,
-    "text": "Dalam diskusi kelompok, Anda lebih sering…",
+    "text": "Saat diskusi kelompok, kamu lebih sering…",
     "isRandomizable": false,
     "options": [
       {
         "id": 9,
-        "text": "Menyusun pikiran sambil menyampaikannya.",
+        "text": "Merangkai pikiran sambil bicara.",
         "pole": "E"
       },
       {
         "id": 10,
-        "text": "Menyusun pikiran sebelum menyampaikannya.",
+        "text": "Merangkai pikiran dulu sebelum bicara.",
         "pole": "I"
       }
     ]
@@ -99,17 +99,17 @@ export const questions = [
     "id": 6,
     "dimensionCode": "SN",
     "sortOrder": 1,
-    "text": "Saat mempelajari sesuatu yang baru, Anda lebih tertarik memulai dari…",
+    "text": "Saat belajar hal baru, kamu lebih tertarik mulai dari…",
     "isRandomizable": false,
     "options": [
       {
         "id": 11,
-        "text": "Gambaran besar dan kemungkinan penggunaannya.",
+        "text": "Gambaran besarnya dan kemungkinan penggunaannya.",
         "pole": "N"
       },
       {
         "id": 12,
-        "text": "Contoh konkret dan cara menggunakannya saat ini.",
+        "text": "Contoh nyata dan cara memakainya sekarang.",
         "pole": "S"
       }
     ]
@@ -118,17 +118,17 @@ export const questions = [
     "id": 7,
     "dimensionCode": "SN",
     "sortOrder": 2,
-    "text": "Saat menjelaskan pengalaman kepada orang lain, Anda lebih sering menekankan…",
+    "text": "Saat cerita tentang pengalamanmu, kamu lebih sering membahas…",
     "isRandomizable": false,
     "options": [
       {
         "id": 13,
-        "text": "Kejadian nyata dan detail yang saya ingat.",
+        "text": "Kejadian dan detail yang aku ingat.",
         "pole": "S"
       },
       {
         "id": 14,
-        "text": "Makna atau pola yang saya tangkap dari pengalaman itu.",
+        "text": "Makna atau pola yang aku tangkap.",
         "pole": "N"
       }
     ]
@@ -137,17 +137,17 @@ export const questions = [
     "id": 8,
     "dimensionCode": "SN",
     "sortOrder": 3,
-    "text": "Saat mencoba cara untuk menyelesaikan tugas yang sudah dikenal, Anda cenderung…",
+    "text": "Saat mengerjakan tugas yang sudah kamu kenal, kamu cenderung…",
     "isRandomizable": false,
     "options": [
       {
         "id": 15,
-        "text": "Menjelajahi kemungkinan pendekatan yang berbeda.",
+        "text": "Mencoba cara lain yang mungkin cocok.",
         "pole": "N"
       },
       {
         "id": 16,
-        "text": "Memulai dari pendekatan yang sudah terbukti berguna.",
+        "text": "Memakai cara yang sudah terbukti membantu.",
         "pole": "S"
       }
     ]
@@ -156,17 +156,17 @@ export const questions = [
     "id": 9,
     "dimensionCode": "SN",
     "sortOrder": 4,
-    "text": "Saat membaca petunjuk, Anda lebih nyaman jika penjelasan dimulai dengan…",
+    "text": "Saat membaca petunjuk, kamu lebih nyaman kalau dimulai dari…",
     "isRandomizable": false,
     "options": [
       {
         "id": 17,
-        "text": "Langkah konkret yang dapat langsung diikuti.",
+        "text": "Langkah yang bisa langsung aku ikuti.",
         "pole": "S"
       },
       {
         "id": 18,
-        "text": "Konsep umum yang menjelaskan tujuan langkahnya.",
+        "text": "Penjelasan umum tentang tujuan langkahnya.",
         "pole": "N"
       }
     ]
@@ -175,17 +175,17 @@ export const questions = [
     "id": 10,
     "dimensionCode": "SN",
     "sortOrder": 5,
-    "text": "Saat melihat sebuah rencana baru, perhatian Anda lebih dahulu tertuju pada…",
+    "text": "Saat melihat rencana baru, hal pertama yang kamu perhatikan adalah…",
     "isRandomizable": false,
     "options": [
       {
         "id": 19,
-        "text": "Kemungkinan pengembangannya di masa depan.",
+        "text": "Kemungkinan pengembangannya nanti.",
         "pole": "N"
       },
       {
         "id": 20,
-        "text": "Fakta dan kebutuhan praktisnya saat ini.",
+        "text": "Fakta dan kebutuhan yang ada sekarang.",
         "pole": "S"
       }
     ]
@@ -194,17 +194,17 @@ export const questions = [
     "id": 11,
     "dimensionCode": "TF",
     "sortOrder": 1,
-    "text": "Saat dua pilihan sama-sama memungkinkan, Anda biasanya lebih dahulu menimbang…",
+    "text": "Kalau dua pilihan sama-sama memungkinkan, kamu biasanya menimbang dulu…",
     "isRandomizable": false,
     "options": [
       {
         "id": 21,
-        "text": "Alasan logis yang mendukung setiap pilihan.",
+        "text": "Alasan masuk akal di balik tiap pilihan.",
         "pole": "T"
       },
       {
         "id": 22,
-        "text": "Dampak setiap pilihan bagi orang yang terlibat.",
+        "text": "Dampak tiap pilihan bagi orang yang terlibat.",
         "pole": "F"
       }
     ]
@@ -213,17 +213,17 @@ export const questions = [
     "id": 12,
     "dimensionCode": "TF",
     "sortOrder": 2,
-    "text": "Saat memberi masukan kepada teman, Anda biasanya lebih dahulu memperhatikan…",
+    "text": "Saat memberi masukan ke teman, kamu biasanya memperhatikan dulu…",
     "isRandomizable": false,
     "options": [
       {
         "id": 23,
-        "text": "Bagaimana masukan itu akan diterima olehnya.",
+        "text": "Bagaimana dia akan menerima masukanku.",
         "pole": "F"
       },
       {
         "id": 24,
-        "text": "Bagian persoalan yang perlu diperbaiki.",
+        "text": "Bagian masalah yang perlu diperbaiki.",
         "pole": "T"
       }
     ]
@@ -232,17 +232,17 @@ export const questions = [
     "id": 13,
     "dimensionCode": "TF",
     "sortOrder": 3,
-    "text": "Jika dua orang berselisih tentang keputusan bersama, Anda lebih dahulu mencari…",
+    "text": "Kalau dua orang beda pendapat soal keputusan bersama, kamu mencari dulu…",
     "isRandomizable": false,
     "options": [
       {
         "id": 25,
-        "text": "Kriteria yang konsisten untuk menilai kedua pendapat.",
+        "text": "Patokan yang sama untuk menilai kedua pendapat.",
         "pole": "T"
       },
       {
         "id": 26,
-        "text": "Kebutuhan pribadi yang melatarbelakangi kedua pendapat.",
+        "text": "Kebutuhan masing-masing di balik pendapatnya.",
         "pole": "F"
       }
     ]
@@ -251,7 +251,7 @@ export const questions = [
     "id": 14,
     "dimensionCode": "TF",
     "sortOrder": 4,
-    "text": "Saat aturan umum kurang cocok untuk satu situasi, Anda lebih dahulu mempertimbangkan…",
+    "text": "Kalau sebuah aturan kurang cocok untuk suatu situasi, kamu memikirkan dulu…",
     "isRandomizable": false,
     "options": [
       {
@@ -261,7 +261,7 @@ export const questions = [
       },
       {
         "id": 28,
-        "text": "Alasan aturan itu diterapkan secara konsisten.",
+        "text": "Alasan aturan itu perlu diterapkan secara konsisten.",
         "pole": "T"
       }
     ]
@@ -270,17 +270,17 @@ export const questions = [
     "id": 15,
     "dimensionCode": "TF",
     "sortOrder": 5,
-    "text": "Setelah membuat keputusan yang sulit, Anda lebih sering menilai keputusan itu dari…",
+    "text": "Setelah mengambil keputusan sulit, kamu lebih sering menilainya dari…",
     "isRandomizable": false,
     "options": [
       {
         "id": 29,
-        "text": "Apakah alasan yang dipakai tetap masuk akal.",
+        "text": "Apakah alasannya tetap masuk akal.",
         "pole": "T"
       },
       {
         "id": 30,
-        "text": "Apakah keputusan itu selaras dengan nilai yang saya pegang.",
+        "text": "Apakah keputusannya sesuai dengan nilai yang aku pegang.",
         "pole": "F"
       }
     ]
@@ -289,17 +289,17 @@ export const questions = [
     "id": 16,
     "dimensionCode": "JP",
     "sortOrder": 1,
-    "text": "Saat merencanakan hari libur, Anda lebih nyaman…",
+    "text": "Saat merencanakan hari libur, kamu lebih nyaman…",
     "isRandomizable": false,
     "options": [
       {
         "id": 31,
-        "text": "Menentukan kegiatan mengikuti suasana saat itu.",
+        "text": "Memilih kegiatan sesuai suasana saat itu.",
         "pole": "P"
       },
       {
         "id": 32,
-        "text": "Menentukan kegiatan utama sebelum hari libur tiba.",
+        "text": "Menentukan kegiatan utama sebelum hari libur.",
         "pole": "J"
       }
     ]
@@ -308,12 +308,12 @@ export const questions = [
     "id": 17,
     "dimensionCode": "JP",
     "sortOrder": 2,
-    "text": "Saat memulai tugas dengan tenggat yang cukup jauh, Anda cenderung…",
+    "text": "Saat mulai tugas yang tenggatnya masih jauh, kamu cenderung…",
     "isRandomizable": false,
     "options": [
       {
         "id": 33,
-        "text": "Menentukan tahapan pengerjaan sejak awal.",
+        "text": "Menentukan tahapan kerja sejak awal.",
         "pole": "J"
       },
       {
@@ -327,17 +327,17 @@ export const questions = [
     "id": 18,
     "dimensionCode": "JP",
     "sortOrder": 3,
-    "text": "Ketika beberapa pilihan sudah cukup baik, Anda lebih nyaman…",
+    "text": "Kalau beberapa pilihan sudah cukup baik, kamu lebih nyaman…",
     "isRandomizable": false,
     "options": [
       {
         "id": 35,
-        "text": "Menjaga pilihan tetap terbuka jika ada informasi baru.",
+        "text": "Tetap membuka pilihan kalau ada informasi baru.",
         "pole": "P"
       },
       {
         "id": 36,
-        "text": "Menetapkan pilihan agar bisa melanjutkan langkah berikutnya.",
+        "text": "Menetapkan pilihan supaya bisa lanjut.",
         "pole": "J"
       }
     ]
@@ -346,17 +346,17 @@ export const questions = [
     "id": 19,
     "dimensionCode": "JP",
     "sortOrder": 4,
-    "text": "Untuk mengatur kegiatan sehari-hari, Anda lebih suka…",
+    "text": "Untuk kegiatan sehari-hari, kamu lebih suka…",
     "isRandomizable": false,
     "options": [
       {
         "id": 37,
-        "text": "Mengikuti daftar atau urutan kegiatan yang sudah ditentukan.",
+        "text": "Mengikuti daftar atau urutan yang sudah dibuat.",
         "pole": "J"
       },
       {
         "id": 38,
-        "text": "Memilih kegiatan berikutnya sesuai keadaan saat itu.",
+        "text": "Memilih kegiatan berikutnya sesuai keadaan.",
         "pole": "P"
       }
     ]
@@ -365,17 +365,17 @@ export const questions = [
     "id": 20,
     "dimensionCode": "JP",
     "sortOrder": 5,
-    "text": "Jika rencana berubah mendadak, kecenderungan pertama Anda adalah…",
+    "text": "Kalau rencana mendadak berubah, hal pertama yang kamu lakukan adalah…",
     "isRandomizable": false,
     "options": [
       {
         "id": 39,
-        "text": "Melihat peluang baru dari perubahan tersebut.",
+        "text": "Melihat kemungkinan baru dari perubahan itu.",
         "pole": "P"
       },
       {
         "id": 40,
-        "text": "Menyusun kembali rencana agar langkah berikutnya jelas.",
+        "text": "Menyusun ulang rencana supaya langkah berikutnya jelas.",
         "pole": "J"
       }
     ]

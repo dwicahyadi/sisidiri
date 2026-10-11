@@ -12,7 +12,7 @@ export function quizRoutes({ repository, tokens }) {
   });
   router.post('/score', (req, res) => {
     const parsed = answersSchema.safeParse(req.body);
-    if (!parsed.success) throw new HttpError(400, 'Lengkapi 20 jawaban dengan pilihan yang valid.');
+    if (!parsed.success) throw new HttpError(400, 'Ada jawaban yang belum lengkap. Periksa pilihanmu, lalu coba lagi.');
     const result = scoreAnswers(parsed.data.answers, repository.getQuestions());
     const personality = repository.getType(result.type);
     if (!personality) throw new Error('Master tipe tidak tersedia.');

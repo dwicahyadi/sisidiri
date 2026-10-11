@@ -1,4 +1,4 @@
-# Personality Insight AI
+# SisiDiri
 
 Aplikasi web refleksi berdasarkan teori MBTI: kuis 20 pertanyaan, hasil empat dimensi, dan ruang konsultasi Gemini. Implementasi MVP sudah tersedia. Hasil tidak dijamin akurat, belum divalidasi ahli, dan hanya membantu refleksi; penilaian profesional membutuhkan pemeriksaan ahli di bidangnya.
 
@@ -42,6 +42,8 @@ Produksi (`NODE_ENV=production`) mewajibkan key, model, secret tetap, dan SDK. J
 
 `src/features` berisi route/schema/scoring/instruction; `src/infrastructure` berisi repository SQLite dan adapter Gemini; `src/security` mengelola token; `public/js` berisi frontend ES modules; `styles` berisi CSS input; `database` berisi schema dan konten master; `tests` berisi unit/integrasi. Database lokal, .env, node_modules, dan CSS build diabaikan Git.
 
+Dokumen produk, arsitektur, kontrak API, dan panduan desain berada di `docs/`. `README.md` dan `AGENTS.md` tetap di root. Template konfigurasi tersedia di [.env.example](.env.example); gunakan `npm run setup`, lalu isi konfigurasi pada `.env`.
+
 Halaman: `/`, `/kuis`, `/hasil`, `/tentang`, dan `/privasi`. Catatan kecil akurasi tampil di beranda, kuis, dan hasil. Halaman tentang menjelaskan batasan dan perlunya penilaian ahli; privasi dijelaskan sebelum chat.
 
 ## Batas MVP dan Status Verifikasi
@@ -52,11 +54,19 @@ Build, seed, pemeriksaan syntax, serta test unit/integrasi dapat dijalankan. Tes
 
 ## Dokumen
 
-- [PRD.md](PRD.md): kebutuhan v1.2 dan disclaimer.
-- [ARCHITECTURE.md](ARCHITECTURE.md): komponen, aliran data, serta batas privasi.
-- [API_CONTRACT.md](API_CONTRACT.md): endpoint dan token.
-- [DATA_MODEL.md](DATA_MODEL.md): schema/master.
-- [QUESTION_BANK.md](QUESTION_BANK.md): 20 butir orisinal dengan ID, opsi, dan pole.
-- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md): status tahap dan pemeriksaan tersisa.
-- [SELF_REVIEW.md](SELF_REVIEW.md): hasil review dan keterbatasan.
+- [PRD.md](docs/PRD.md): kebutuhan v1.2 dan disclaimer.
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md): komponen, aliran data, serta batas privasi.
+- [API_CONTRACT.md](docs/API_CONTRACT.md): endpoint dan token.
+- [DATA_MODEL.md](docs/DATA_MODEL.md): schema/master.
+- [QUESTION_BANK.md](docs/QUESTION_BANK.md): 20 butir orisinal dengan ID, opsi, dan pole.
+- [IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md): status tahap dan pemeriksaan tersisa.
+- [SELF_REVIEW.md](docs/SELF_REVIEW.md): hasil review dan keterbatasan.
 - [AGENTS.md](AGENTS.md): panduan kontribusi.
+
+## Pembaruan UI 11 Oktober 2026
+
+Kuis langsung maju saat pilihan diklik, hasil memakai persentase dua warna dan tab ringkas, serta chat mengambang dengan mode layar penuh di ponsel. Browser desktop/360 px dan satu respons Gemini live sudah diperiksa melalui server lokal pengguna. Catatan pembatasan lingkungan di atas menggambarkan implementasi awal. Ilustrasi tipe dapat diganti di `public/assets/types/INFJ.png` dan kode uppercase lainnya, ukuran 600 × 600 px. Rincian: [docs/QUIZ_RESULT_DESIGN.md](docs/QUIZ_RESULT_DESIGN.md).
+
+## Bahasa dan Tampilan SisiDiri
+
+Nama aplikasi menggunakan SisiDiri dengan ikon mark.svg. Bahasa untuk Gen Z/milenial dan standar keterbacaan dicatat di [docs/COPY_GUIDE.md](docs/COPY_GUIDE.md). Setelah perubahan konten master, jalankan `npm run db:seed`; CSS dan home memerlukan `npm run build`. Restart server untuk perubahan instruction/error backend.

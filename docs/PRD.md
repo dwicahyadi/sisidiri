@@ -1,7 +1,7 @@
-# PRD — Personality Insight AI
+# PRD — SisiDiri
 
 **Versi:** 1.2  
-**Status:** Implementasi MVP tersedia; pemeriksaan browser dan Gemini live belum selesai  
+**Status:** Implementasi MVP tersedia; alur browser desktop/360 px dan satu pesan Gemini live diperiksa, verifikasi rilis belum lengkap  
 **Platform:** Web responsif
 
 **Keputusan 10 Oktober 2026:** frontend vanilla ES modules, Bahasa Indonesia, visual profesional/tenang, chat stateless dengan token bertanda tangan, batas 25 pesan di UI, dan pertanyaan orisinal yang disusun untuk proyek ini. Pengguna mengizinkan implementasi pada 10 Oktober 2026. Tambahkan catatan singkat tentang keterbatasan akurasi dan halaman penjelasan.
@@ -49,18 +49,19 @@ Pengunjung umum yang ingin mengenali kecenderungan karakter dan berdiskusi singk
 ### 6.1 Beranda
 
 - Judul dan penjelasan singkat tentang kuis MBTI.
-- Informasi: 20 pertanyaan, perkiraan durasi, hasil langsung, dan tujuan refleksi diri.
+- Beranda mengajak mengikuti kuis kurang lebih 3 menit; jumlah soal tidak ditonjolkan di home. Total tetap 20 pertanyaan.
 - Penafian: hasil bukan diagnosis kesehatan mental/psikologis.
-- Tombol utama **Mulai Kuis**.
+- Tombol utama **Ikuti kuis**.
+- Redesign beranda: modern clean, ilustrasi home.png 1536 × 1024 px (3:2), serta satu disclaimer akurasi di akhir konten. Redesign kuis, hasil, dan chat diterapkan atas permintaan pengguna 11 Oktober 2026. Arahan aset final ada di [docs/HOME_DESIGN.md](HOME_DESIGN.md).
 
 ### 6.2 Kuis
 
 - Terdiri dari empat dimensi: E–I, S–N, T–F, dan J–P.
 - Setiap dimensi memiliki tepat lima pertanyaan aktif; total 20 pertanyaan.
 - Satu pertanyaan memiliki dua opsi eksklusif, masing-masing memetakan ke satu kutub dimensi.
-- Tampilkan nomor pertanyaan, nama/indikator dimensi, dan progress bar, misalnya `7 dari 20`.
+- Tampilkan nomor pertanyaan dan progress posisi; cukup satu instruksi pendek.
 - Tombol **Kembali** harus mempertahankan jawaban yang sudah dipilih selama tab masih aktif.
-- Tombol **Lanjut** baru aktif setelah pengguna memilih jawaban.
+- Klik pilihan langsung memajukan pertanyaan. Pilihan terakhir otomatis menghitung hasil; tombol Kembali mempertahankan jawaban dan memungkinkan perubahan. Kegagalan scoring mempertahankan jawaban agar dapat dicoba kembali.
 - Pertanyaan ditampilkan satu per satu dan dapat diacak dalam dimensi yang sama bila flag `is_randomizable` aktif.
 - Pengguna tidak dapat membuka halaman hasil jika jumlah jawaban belum 20 atau terdapat pertanyaan duplikat/tidak valid.
 - Gunakan 20 pertanyaan orisinal di [QUESTION_BANK.md](QUESTION_BANK.md), lima per dimensi. Keduanya merupakan pilihan preferensi tanpa jawaban benar/salah. Pertanyaan tambahan tetap nonaktif.
@@ -73,18 +74,21 @@ Pengunjung umum yang ingin mengenali kecenderungan karakter dan berdiskusi singk
 - Karena tiap dimensi terdiri dari lima pertanyaan, tidak ada nilai seri.
 - Gabungkan huruf pemenang E/I, S/N, T/F, J/P menjadi satu tipe, misalnya `ENFP`.
 - Ambil judul, ringkasan, kekuatan, tantangan, gaya komunikasi, dan rekomendasi refleksi dari master `personality_types`.
-- Tampilkan skor mentah tiap dimensi sebagai dasar transparansi, bukan sebagai tingkat validitas ilmiah.
+- UI menampilkan persentase dua kutub; API tetap mempertahankan skor mentah. Persentase bukan tingkat validitas ilmiah.
 
 ### 6.4 Halaman Hasil
 
 - Menampilkan kode dan nama tipe, misalnya `INTJ — The Architect`.
-- Menampilkan deskripsi ringkas dan detail tipe.
-- Menampilkan empat kartu/skala skor:
+- Ilustrasi hasil desktop berada di kiri pada sepertiga area konten; informasi tipe di kanan. Mobile bertumpuk dengan ilustrasi di atas.
+- Menampilkan ilustrasi `public/assets/types/INFJ.png` sesuai kode tipe uppercase. Placeholder PNG 600 × 600 px, rasio 1:1.
+- Detail ringkas dibagi menjadi tab Gambaran, Kekuatan, Tantangan, dan Komunikasi; tab dapat diakses keyboard dan layar ponsel.
+- Menampilkan empat garis penuh yang terbagi dua warna dengan tingkat terang seimbang, berlabel persentase; tanpa skor pecahan atau caption pilihan:
   - Ekstrovert (E) — Introvert (I)
   - Sensing (S) — Intuition (N)
   - Thinking (T) — Feeling (F)
   - Judging (J) — Perceiving (P)
-- Menampilkan CTA **Diskusikan hasil saya dengan AI** dan contoh pertanyaan cepat: “Apa kekuatan utama saya?”, “Bagaimana gaya komunikasi saya?”, dan “Apa tantangan yang perlu saya perhatikan?”.
+- Tombol mengambang membuka chat dengan sapaan sesuai tipe dan judul hasil. Desktop: dialog kecil, perbesar layar penuh, dan perkecil kembali ke tombol; ponsel: langsung layar penuh. Draft dan percakapan bertahan saat diperkecil. Enter mengirim, Shift+Enter membuat baris baru, dan input IME tidak mengirim saat komposisi.
+- Disclaimer akurasi lengkap hanya di home dan halaman tentang; hasil menyediakan tautan batasan, tanpa mengulang disclaimer di kuis, tab, maupun chat. Informasi pemrosesan Gemini tetap terlihat sebelum pesan pertama.
 - Chat tidak boleh muncul sebelum hasil kuis lengkap tersedia.
 
 ### 6.5 Konsultasi AI
@@ -298,6 +302,10 @@ Field `strengths`, `challenges`, dan `reflection_tips` disimpan sebagai JSON TEX
 
 Sudah diputuskan: Bahasa Indonesia, visual profesional/tenang, frontend vanilla ES modules, token stateless, batas 25 pesan di UI, ringkasan dari master server, dan pertanyaan orisinal yang disiapkan dalam dokumentasi. Pertanyaan tidak diambil dari tes resmi atau bank berlisensi; belum ada validasi psikometrik atau tinjauan psikolog.
 
-Implementasi awal memakai Node.js 22.13+, Express 5.1.0, Zod 4.3.5, Tailwind 4.1.18, SQLite bawaan Node (`node:sqlite`), serta default model `gemini-2.5-flash`. Sebanyak 16 deskripsi tipe orisinal sudah tersedia di `database/personality-types.js`. SDK Google bersifat optional untuk menjalankan kuis lokal tanpa AI; produksi wajib memiliki SDK dan konfigurasi Gemini lengkap. SDK belum terpasang dalam lingkungan kerja ini karena akses registry dibatasi. Tinjau UI, keterbacaan, keseimbangan pertanyaan, dan Gemini live sebelum rilis; jangan mengklaim tinjauan psikolog tanpa bukti.
+Implementasi awal memakai Node.js 22.13+, Express 5.1.0, Zod 4.3.5, Tailwind 4.1.18, SQLite bawaan Node (`node:sqlite`), serta default model `gemini-2.5-flash`. Sebanyak 16 deskripsi tipe orisinal sudah tersedia di `database/personality-types.js`. SDK Google bersifat optional untuk menjalankan kuis lokal tanpa AI; produksi wajib memiliki SDK dan konfigurasi Gemini lengkap. SDK kini tersedia; alur browser serta satu pesan Gemini live telah diperiksa pada 11 Oktober 2026. Tinjau UI, keterbacaan, keseimbangan pertanyaan, dan Gemini live sebelum rilis; jangan mengklaim tinjauan psikolog tanpa bukti.
 
 Dokumen pendukung: [ARCHITECTURE.md](ARCHITECTURE.md), [API_CONTRACT.md](API_CONTRACT.md), [DATA_MODEL.md](DATA_MODEL.md), [QUESTION_BANK.md](QUESTION_BANK.md), [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), dan [SELF_REVIEW.md](SELF_REVIEW.md).
+
+## Pembaruan Bahasa dan Brand — 11 Oktober 2026
+
+Nama aplikasi SisiDiri dengan ikon mark.svg. Redaksi ditujukan ke Gen Z dan milenial: konkret, singkat, memakai kamu/aku, tanpa slogan dan jargon motivasi. Font dipertahankan; ukuran teks isi diperbesar menjadi 16–18 px dengan kontras teks sekunder lebih baik. Panduan: [docs/COPY_GUIDE.md](COPY_GUIDE.md). Bank pertanyaan v1.1 mempertahankan ID/pole; seluruh deskripsi tipe dan master diperbarui.

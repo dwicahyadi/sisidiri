@@ -1,10 +1,10 @@
-# Arsitektur Personality Insight AI
+# Arsitektur SisiDiri
 
 Status: implementasi awal berdasarkan PRD v1.2, diizinkan pengguna 10 Oktober 2026. Struktur berikut sudah tersedia. Hasil review dan batas verifikasi ada di [SELF_REVIEW.md](SELF_REVIEW.md).
 
 ## Pilihan rancangan
 
-Gunakan satu aplikasi Node.js LTS + Express yang menyajikan API dan frontend pada origin yang sama. Frontend berupa SPA ringan dengan JavaScript ES modules dan Tailwind CSS; pilihan ini mengambil opsi SPA yang diizinkan PRD. Hindari framework frontend tambahan sampai ada kebutuhan konkret. Runtime Node.js 22.13+ menggunakan SQLite bawaan (`node:sqlite`); Express 5.1.0, Zod 4.3.5, Tailwind 4.1.18, dan PostCSS dikunci di package-lock. Target SDK Google 2.28.0 belum terpasang karena registry tidak dapat diakses; SDK optional untuk kuis lokal dan wajib saat produksi. API key tidak diperlukan untuk alur kuis. Node 22 menandai node:sqlite sebagai eksperimental.
+Gunakan satu aplikasi Node.js LTS + Express yang menyajikan API dan frontend pada origin yang sama. Frontend berupa SPA ringan dengan JavaScript ES modules dan Tailwind CSS; pilihan ini mengambil opsi SPA yang diizinkan PRD. Hindari framework frontend tambahan sampai ada kebutuhan konkret. Runtime Node.js 22.13+ menggunakan SQLite bawaan (`node:sqlite`); Express 5.1.0, Zod 4.3.5, Tailwind 4.1.18, dan PostCSS dikunci di package-lock. Target SDK Google 2.28.0 kini tersedia; SDK optional untuk kuis lokal dan wajib saat produksi. API key tidak diperlukan untuk alur kuis. Node 22 menandai node:sqlite sebagai eksperimental.
 
 ```text
 src/
@@ -48,7 +48,7 @@ Backend tidak menyimpan sesi, hasil, atau rantai ID; setiap request memperoleh k
 
 SDK dan API key hanya digunakan backend. Pakai Interactions API, `interaction.output_text`, `interaction.id`, dan `previous_interaction_id` sesuai PRD; jangan beralih ke `models.generateContent()` atau menambah tools.
 
-Kirim `system_instruction` pada **setiap** interaksi, termasuk kelanjutan. Dokumentasi resmi menyatakan parameter tersebut berlaku per interaksi dan tidak diwariskan hanya dengan interaction ID; PRD v1.1 sudah menyelaraskannya. Model dikonfigurasi melalui `GEMINI_MODEL`, default `gemini-2.5-flash`. Adapter menargetkan SDK 2.28.0; timeout 30 detik, tanpa retry otomatis, serta output limit default 800 token. Kontrak adapter diperiksa dengan mock SDK; koneksi live belum diperiksa.
+Kirim `system_instruction` pada **setiap** interaksi, termasuk kelanjutan. Dokumentasi resmi menyatakan parameter tersebut berlaku per interaksi dan tidak diwariskan hanya dengan interaction ID; PRD v1.1 sudah menyelaraskannya. Model dikonfigurasi melalui `GEMINI_MODEL`, default `gemini-2.5-flash`. Adapter menargetkan SDK 2.28.0; timeout 30 detik, tanpa retry otomatis, serta output limit default 800 token. Kontrak adapter diperiksa dengan mock SDK; satu respons live berhasil diperiksa 11 Oktober 2026.
 
 Target respons sekitar 180 kata/1.200 karakter melalui instruction dan output limit provider yang sesuai. Jangan memotong teks secara buta. Timeout tidak memicu retry otomatis karena provider mungkin sudah menghasilkan interaksi.
 
@@ -65,3 +65,7 @@ Produksi mewajibkan `GEMINI_API_KEY`, `GEMINI_MODEL`, dan `CHAT_TOKEN_SECRET`, s
 ## Frontend dan Disclaimer
 
 Beranda diprarender oleh build dari template yang juga dipakai browser; interaksi berikutnya memakai ES modules dan History API. Halaman tersedia pada `/`, `/kuis`, `/hasil`, `/tentang`, dan `/privasi`. Catatan akurasi kecil tampil di beranda/kuis/hasil, dengan penjelasan ahli dan batas instrumen pada `/tentang`. Teks chat dirender memakai textContent, tanpa HTML provider. CSS dibangun lokal; tidak ada CDN, font eksternal, atau analytics. Pemeriksaan browser pada lingkungan ini terhalang pembatasan port lokal dan akses file browser.
+
+## Pembaruan UI 11 Oktober 2026
+
+Kuis memilih-langsung-maju, hasil memakai persentase dua warna dan tab, serta chat menggunakan native dialog mengambang/layar penuh. Ilustrasi tipe berada di public/assets/types dengan kode uppercase PNG. API dan state memori tetap. Detail dan hasil pemeriksaan browser terbaru ada di [docs/QUIZ_RESULT_DESIGN.md](QUIZ_RESULT_DESIGN.md); catatan pembatasan browser di atas merupakan status implementasi awal.

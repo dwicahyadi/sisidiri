@@ -23,12 +23,12 @@ export async function createGeminiClient(config, providedSDK) {
         }, { timeout_ms: config.timeoutMs, retries: { strategy: 'none' } });
       } catch (error) {
         const timeout = /timeout|timed out|abort/i.test(error.name || '') || /timeout|timed out/i.test(error.message || '');
-        throw new HttpError(timeout ? 504 : 502, 'Konsultasi sedang tidak dapat diproses. Silakan coba lagi nanti.');
+        throw new HttpError(timeout ? 504 : 502, 'AI belum bisa membalas. Coba lagi sebentar, ya.');
       }
-      if (interaction.status && interaction.status !== 'completed') throw new HttpError(502, 'Jawaban belum selesai. Silakan coba lagi nanti.');
+      if (interaction.status && interaction.status !== 'completed') throw new HttpError(502, 'Balasan AI belum selesai. Coba lagi sebentar, ya.');
       const text = typeof interaction.output_text === 'string' ? interaction.output_text.trim() : '';
       if (!text || typeof interaction.id !== 'string' || !interaction.id.trim() || interaction.id.length > 1024) {
-        throw new HttpError(502, 'Jawaban belum tersedia. Silakan coba lagi nanti.');
+        throw new HttpError(502, 'Balasan AI belum tersedia. Coba lagi sebentar, ya.');
       }
       return { message: text, id: interaction.id };
     },

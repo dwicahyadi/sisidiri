@@ -29,7 +29,7 @@ export function createTokenService(secret, now = () => Math.floor(Date.now() / 1
         type: result.type, dimensions: result.dimensions, previousInteractionId: null });
     },
     verify(token) {
-      const invalid = () => new HttpError(401, 'Akses konsultasi tidak valid atau sudah berakhir. Silakan mulai ulang kuis.');
+      const invalid = () => new HttpError(401, 'Akses chat sudah berakhir atau tidak dikenali. Ulangi kuis untuk mulai lagi.');
       if (typeof token !== 'string' || Buffer.byteLength(token) > 4096 || !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{43}$/.test(token)) throw invalid();
       const [encoded, signature] = token.split('.');
       const expected = createHmac('sha256', secret).update(encoded).digest();

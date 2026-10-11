@@ -1,9 +1,9 @@
 {
-  "name": "personality-insight-ai",
+  "name": "sisidiri",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Kuis refleksi berdasarkan teori MBTI dengan konsultasi Gemini.",
+  "description": "Kuis kepribadian SisiDiri berdasarkan teori MBTI, dengan chat AI Gemini.",
   "engines": {
     "node": ">=22.13.0"
   },

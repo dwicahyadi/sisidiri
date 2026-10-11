@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="15" fill="#244e46"/><path d="M24 10c0 8-6 14-14 14 8 0 14 6 14 14 0-8 6-14 14-14-8 0-14-6-14-14Z" fill="#dce8bc"/><circle cx="35" cy="13" r="3" fill="#dce8bc"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">SisiDiri</title>
+<desc id="desc">A friendly black-haired doodle portrait extending beyond an organic forest-green circle.</desc>
+<path d="M436 277c6 98-69 176-170 179C164 459 82 392 77 294 72 196 148 115 246 111c103-5 184 65 190 166Z" fill="#244e46"/>
+<!-- Hair sits above and outside the circle, with an intentionally uneven outline. -->
+<path d="M153 257c-35 9-59-12-55-39-25-24-12-54 10-64-12-29 8-56 37-60 1-34 31-53 63-43 21-26 58-22 77-6 31-15 61 3 68 30 33-2 57 23 54 52 28 14 36 44 18 66 17 30-5 61-35 64l-62 53-175-53Z" fill="#151916"/>
+<!-- Simple cropped shoulders and long neck. -->
+<path d="m229 322-4 57-42 18c29 31 71 45 111 42 35-2 64-12 89-31l-69-35-8-61Z" fill="#FFFDF7" stroke="#151916" stroke-width="10" stroke-linejoin="round"/>
+<!-- Asymmetric face, small ear, curved cheek and forehead. -->
+<path d="M209 151c-5 24-22 45-47 52-20-17-42-5-42 15-1 20 19 34 41 29 7 55 35 94 78 108 42 13 87-8 104-45 14-30 11-58 0-90-8-25-23-49-39-65-13 21-35 27-55 24-17-3-29-13-40-28Z" fill="#FFFDF7" stroke="#151916" stroke-width="10" stroke-linejoin="round"/>
+<!-- Tiny doodle details; no realistic rendering. -->
+<path d="M142 219q9-8 17 3m64-6q13-10 27-4m35-9q14-8 27 1" stroke="#151916" stroke-width="9" stroke-linecap="round"/>
+<ellipse cx="239" cy="240" rx="6" ry="10" transform="rotate(-15 239 240)" fill="#151916"/>
+<ellipse cx="299" cy="228" rx="6" ry="10" transform="rotate(-15 299 228)" fill="#151916"/>
+<path d="m272 240 14 22q-5 8-17 6" stroke="#151916" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M248 287q25 14 52-3c-1 22-12 36-27 35-15-1-22-15-25-32Z" fill="#151916" stroke="#151916" stroke-width="5" stroke-linejoin="round"/>
+<path d="M156 242c-19 7-26 23-20 36 5 13 21 12 28 2" stroke="#D8B65D" stroke-width="10" stroke-linecap="round"/>
+<!-- Two loose gesture marks reinforce the hand-drawn personality. -->
+<path d="m397 303 19-9m-16 30 23 2" stroke="#151916" stroke-width="9" stroke-linecap="round"/>
+</svg>

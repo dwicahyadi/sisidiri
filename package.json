@@ -19,6 +19,7 @@
     "assets:optimize": "python3 scripts/optimize-assets.py"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "express": "5.1.0",
     "zod": "4.3.5"
   },

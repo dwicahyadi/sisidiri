@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex, follow">
     <meta name="site-origin" content="">
     <meta name="site-indexable" content="false">
-    <meta name="analytics-enabled" content="false">
+    <meta name="analytics-enabled" content="true">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="SisiDiri">
     <meta property="og:locale" content="id_ID">
@@ -21,6 +21,10 @@
     <link rel="icon" type="image/svg+xml" href="/assets/mark.svg">
     <link rel="stylesheet" href="/assets/app.css">
     <script type="module" src="/js/app.js"></script>
+    <script type="module">
+      import { inject } from '@vercel/analytics';
+      inject();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Lewati ke konten</a>

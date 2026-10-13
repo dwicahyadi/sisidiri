@@ -1,6 +1,6 @@
 # Bank Pertanyaan Refleksi
 
-Versi 1.1 — 11 Oktober 2026. Bahasa diperbarui untuk Gen Z dan milenial; ID, urutan, pole, dan makna pasangan dipertahankan. Materi orisinal yang disusun oleh asisten untuk proyek SisiDiri sesuai instruksi pengguna. Status: konten awal sudah masuk seed melalui database/questions.js; pemeriksaan keterbacaan bersama calon pengguna tetap diperlukan sebelum rilis. Ini bukan butir tes MBTI resmi, bukan salinan instrumen berlisensi, dan belum divalidasi psikometrik atau ditinjau psikolog.
+Versi 1.2 — 13 Oktober 2026. Pertanyaan dan pilihan memakai bahasa obrolan sehari-hari untuk Gen Z dan milenial; ID, urutan, pole, dan makna pasangan dipertahankan. Materi orisinal yang disusun oleh asisten untuk proyek SisiDiri sesuai instruksi pengguna. Status: konten awal sudah masuk seed melalui database/questions.js; pemeriksaan keterbacaan bersama calon pengguna tetap diperlukan sebelum rilis. Ini bukan butir tes MBTI resmi, bukan salinan instrumen berlisensi, dan belum divalidasi psikometrik atau ditinjau psikolog.
 
 ## Petunjuk untuk Pengunjung
 
@@ -18,11 +18,11 @@ Fokus refleksi: kecenderungan berinteraksi dan memulihkan energi, bukan kemampua
 
 | ID | Urutan | Pertanyaan | Pilihan A | Pole A | Pilihan B | Pole B |
 |---|---|---|---|---|---|---|
-| 1 | 1 | Setelah hari yang melelahkan, kamu lebih sering ingin… | Ketemu orang yang aku suka. | E | Sendirian dulu di tempat yang tenang. | I |
-| 2 | 2 | Saat mencari ide untuk masalah sehari-hari, kamu lebih nyaman… | Memikirkannya sendiri dulu. | I | Ngobrol dengan orang lain dulu. | E |
-| 3 | 3 | Saat bertemu beberapa orang baru, kamu biasanya… | Mulai ngobrol untuk mengenal mereka. | E | Mengamati dulu sebelum ikut ngobrol. | I |
-| 4 | 4 | Kalau punya waktu luang di akhir pekan, kamu lebih sering ingin… | Melakukan kegiatan sendiri. | I | Bikin kegiatan bareng teman atau keluarga. | E |
-| 5 | 5 | Saat diskusi kelompok, kamu lebih sering… | Merangkai pikiran sambil bicara. | E | Merangkai pikiran dulu sebelum bicara. | I |
+| 1 | 1 | Habis hari yang capek, kamu biasanya ngapain? | Ketemu dan ngobrol sama orang yang aku suka. | E | Sendiri dulu di tempat yang tenang. | I |
+| 2 | 2 | Kalau lagi cari solusi buat masalah sehari-hari, kamu mulai dari mana? | Mikir sendiri dulu. | I | Ngobrol dulu sama orang lain. | E |
+| 3 | 3 | Pas ketemu orang-orang baru, kamu biasanya ngapain? | Mulai ngajak ngobrol biar kenal. | E | Lihat-lihat suasana dulu, baru ikut ngobrol. | I |
+| 4 | 4 | Kalau lagi senggang di akhir pekan, kamu lebih suka ngapain? | Ngisi waktu dengan kegiatan sendiri. | I | Bikin kegiatan bareng teman atau keluarga. | E |
+| 5 | 5 | Pas diskusi bareng, kamu biasanya nyampein ide dengan cara apa? | Ngomong sambil mikirin idenya. | E | Mikirin idenya dulu, baru ngomong. | I |
 
 ## SN — Sensing / Intuition
 
@@ -30,11 +30,11 @@ Fokus refleksi: informasi yang lebih dahulu diperhatikan, bukan kecerdasan atau 
 
 | ID | Urutan | Pertanyaan | Pilihan A | Pole A | Pilihan B | Pole B |
 |---|---|---|---|---|---|---|
-| 6 | 1 | Saat belajar hal baru, kamu lebih tertarik mulai dari… | Gambaran besarnya dan kemungkinan penggunaannya. | N | Contoh nyata dan cara memakainya sekarang. | S |
-| 7 | 2 | Saat cerita tentang pengalamanmu, kamu lebih sering membahas… | Kejadian dan detail yang aku ingat. | S | Makna atau pola yang aku tangkap. | N |
-| 8 | 3 | Saat mengerjakan tugas yang sudah kamu kenal, kamu cenderung… | Mencoba cara lain yang mungkin cocok. | N | Memakai cara yang sudah terbukti membantu. | S |
-| 9 | 4 | Saat membaca petunjuk, kamu lebih nyaman kalau dimulai dari… | Langkah yang bisa langsung aku ikuti. | S | Penjelasan umum tentang tujuan langkahnya. | N |
-| 10 | 5 | Saat melihat rencana baru, hal pertama yang kamu perhatikan adalah… | Kemungkinan pengembangannya nanti. | N | Fakta dan kebutuhan yang ada sekarang. | S |
+| 6 | 1 | Kalau belajar hal baru, kamu lebih suka mulai dari mana? | Ngerti ide besarnya dan bisa dipakai buat apa aja. | N | Lihat contoh nyata dan cara pakainya langsung. | S |
+| 7 | 2 | Pas cerita pengalaman, kamu lebih sering bahas apa? | Apa yang kejadian dan detail yang aku ingat. | S | Pelajaran atau hubungan antar kejadian yang aku tangkap. | N |
+| 8 | 3 | Kalau ngerjain tugas yang udah biasa kamu lakukan, kamu pilih cara yang mana? | Nyoba cara lain yang kayaknya cocok. | N | Pakai cara yang selama ini udah terbukti membantu. | S |
+| 9 | 4 | Kalau baca panduan, kamu lebih suka bagian apa yang dijelasin dulu? | Langkah-langkah yang bisa langsung aku ikuti. | S | Gambaran besarnya: ini buat apa dan kenapa caranya begitu. | N |
+| 10 | 5 | Pas lihat rencana baru, apa yang pertama kamu pikirin? | Nanti bisa dikembangin jadi apa aja, ya? | N | Fakta yang ada dan apa yang dibutuhin sekarang. | S |
 
 ## TF — Thinking / Feeling
 
@@ -42,11 +42,11 @@ Fokus refleksi: pertimbangan yang didahulukan saat mengambil keputusan, bukan ke
 
 | ID | Urutan | Pertanyaan | Pilihan A | Pole A | Pilihan B | Pole B |
 |---|---|---|---|---|---|---|
-| 11 | 1 | Kalau dua pilihan sama-sama memungkinkan, kamu biasanya menimbang dulu… | Alasan masuk akal di balik tiap pilihan. | T | Dampak tiap pilihan bagi orang yang terlibat. | F |
-| 12 | 2 | Saat memberi masukan ke teman, kamu biasanya memperhatikan dulu… | Bagaimana dia akan menerima masukanku. | F | Bagian masalah yang perlu diperbaiki. | T |
-| 13 | 3 | Kalau dua orang beda pendapat soal keputusan bersama, kamu mencari dulu… | Patokan yang sama untuk menilai kedua pendapat. | T | Kebutuhan masing-masing di balik pendapatnya. | F |
-| 14 | 4 | Kalau sebuah aturan kurang cocok untuk suatu situasi, kamu memikirkan dulu… | Keadaan khusus orang yang terkena aturan itu. | F | Alasan aturan itu perlu diterapkan secara konsisten. | T |
-| 15 | 5 | Setelah mengambil keputusan sulit, kamu lebih sering menilainya dari… | Apakah alasannya tetap masuk akal. | T | Apakah keputusannya sesuai dengan nilai yang aku pegang. | F |
+| 11 | 1 | Kalau ada dua pilihan yang sama-sama bisa diambil, apa yang kamu pikirin dulu? | Alasan dan plus minus tiap pilihan. | T | Efek tiap pilihan buat orang-orang yang terlibat. | F |
+| 12 | 2 | Kalau mau kasih masukan ke teman, apa yang kamu pikirin dulu? | Gimana caranya supaya dia bisa nerima masukanku. | F | Bagian mana yang perlu dibenerin. | T |
+| 13 | 3 | Kalau dua orang beda pendapat soal keputusan bareng, apa yang kamu cari tahu dulu? | Kalau pakai ukuran yang sama, alasan mana yang lebih kuat? | T | Masing-masing sebenarnya butuh apa? | F |
+| 14 | 4 | Kalau ada aturan yang terasa kurang pas buat situasinya, apa yang kamu pikirin dulu? | Kondisi orang yang kena aturan itu. | F | Kenapa aturan itu perlu berlaku sama buat semua orang. | T |
+| 15 | 5 | Habis ambil keputusan yang sulit, apa yang kamu pertanyakan ke diri sendiri? | Alasanku tadi masuk akal, nggak? | T | Keputusan tadi sesuai sama prinsip yang aku pegang, nggak? | F |
 
 ## JP — Judging / Perceiving
 
@@ -54,11 +54,11 @@ Fokus refleksi: kecenderungan mengatur kegiatan dan menyikapi pilihan, bukan ked
 
 | ID | Urutan | Pertanyaan | Pilihan A | Pole A | Pilihan B | Pole B |
 |---|---|---|---|---|---|---|
-| 16 | 1 | Saat merencanakan hari libur, kamu lebih nyaman… | Memilih kegiatan sesuai suasana saat itu. | P | Menentukan kegiatan utama sebelum hari libur. | J |
-| 17 | 2 | Saat mulai tugas yang tenggatnya masih jauh, kamu cenderung… | Menentukan tahapan kerja sejak awal. | J | Menyesuaikan tahapan sambil mengerjakannya. | P |
-| 18 | 3 | Kalau beberapa pilihan sudah cukup baik, kamu lebih nyaman… | Tetap membuka pilihan kalau ada informasi baru. | P | Menetapkan pilihan supaya bisa lanjut. | J |
-| 19 | 4 | Untuk kegiatan sehari-hari, kamu lebih suka… | Mengikuti daftar atau urutan yang sudah dibuat. | J | Memilih kegiatan berikutnya sesuai keadaan. | P |
-| 20 | 5 | Kalau rencana mendadak berubah, hal pertama yang kamu lakukan adalah… | Melihat kemungkinan baru dari perubahan itu. | P | Menyusun ulang rencana supaya langkah berikutnya jelas. | J |
+| 16 | 1 | Kalau mau liburan, kamu lebih suka ngatur kegiatannya dengan cara apa? | Milih mau ngapain sesuai suasana nanti. | P | Nentuin kegiatan utamanya dari sebelum berangkat. | J |
+| 17 | 2 | Kalau mulai tugas yang deadline-nya masih lama, gimana kamu ngatur langkah kerjanya? | Nyusun langkah kerjanya dari awal. | J | Nentuin langkah berikutnya sambil jalan. | P |
+| 18 | 3 | Kalau udah ada beberapa pilihan yang oke, kamu lebih suka ngapain? | Tetap buka pilihan, siapa tahu ada info baru. | P | Nentuin pilihan biar bisa lanjut. | J |
+| 19 | 4 | Buat kegiatan sehari-hari, gimana kamu nentuin mau ngapain dulu? | Ngikutin daftar atau urutan yang udah aku bikin. | J | Milih mau ngapain berikutnya sesuai keadaan. | P |
+| 20 | 5 | Kalau rencana tiba-tiba berubah, apa yang pertama kamu lakukan? | Cari kegiatan atau pilihan baru yang jadi mungkin. | P | Atur ulang rencana biar tahu habis ini mau ngapain. | J |
 
 ## ID Opsi untuk Seed
 
